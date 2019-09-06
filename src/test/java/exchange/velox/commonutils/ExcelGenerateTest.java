@@ -1,0 +1,94 @@
+package exchange.velox.commonutils;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+public class ExcelGenerateTest {
+    @Test
+    public void generateExcel() throws IOException {
+        List<String> headers = new ArrayList<>();
+        headers.add("Name");
+        headers.add("Date");
+        headers.add("Salary");
+
+        List<List<Object>> data = new ArrayList<>();
+        List<Object> row1 = new ArrayList<>();
+        row1.add("Jame");
+        row1.add(DateTimeUtils.switchToHKTWithoutChangingValue(new Date()));
+        row1.add(new BigDecimal("100"));
+
+        List<Object> row2 = new ArrayList<>();
+        row2.add("David");
+        row2.add(DateTimeUtils.switchToHKTWithoutChangingValue(new Date()));
+        row2.add(BigDecimal.valueOf(109.1));
+
+        List<Object> row3 = new ArrayList<>();
+        row3.add("Tony");
+        row3.add(DateTimeUtils.switchToHKTWithoutChangingValue(new Date()));
+        row3.add(BigDecimal.valueOf(209.1));
+
+        data.add(row1);
+        data.add(row2);
+        data.add(row3);
+
+        SheetDTO sheetDTO = new SheetDTO();
+        sheetDTO.setHeaders(headers);
+        sheetDTO.setRows(data);
+
+        LinkedHashMap<String, SheetDTO> excel = new LinkedHashMap<>();
+
+        List<String> headers1 = new ArrayList<>();
+        headers1.add("Name1");
+        headers1.add("Date1");
+        headers1.add("Salary1");
+
+        List<List<Object>> data1 = new ArrayList<>();
+        List<Object> row11 = new ArrayList<>();
+        row11.add(null);
+        row11.add(DateTimeUtils.switchToHKTWithoutChangingValue(new Date()));
+        row11.add(new BigDecimal("100"));
+
+        List<Object> row21 = new ArrayList<>();
+        row21.add("David");
+        row21.add(DateTimeUtils.switchToHKTWithoutChangingValue(new Date()));
+        row21.add(BigDecimal.valueOf(1093.1));
+
+        List<Object> row31 = new ArrayList<>();
+        row31.add("Tony");
+        row31.add(DateTimeUtils.switchToHKTWithoutChangingValue(new Date()));
+        row31.add(BigDecimal.valueOf(2090.1));
+
+        data1.add(row11);
+        data1.add(row21);
+        data1.add(row31);
+
+        SheetDTO sheetDTO1 = new SheetDTO();
+        sheetDTO1.setHeaders(headers1);
+        sheetDTO1.setRows(data1);
+
+        excel.put("New User", sheetDTO1);
+        excel.put("User", sheetDTO);
+
+        byte[] file = ExcelUtils.generateExcelFile(excel);
+
+        HyperLinkDTO hyperLinkDTO =  new HyperLinkDTO();
+        hyperLinkDTO.setSheetName("User");
+        hyperLinkDTO.setColumnName("Name");
+        hyperLinkDTO.setRowIndex(2);
+        hyperLinkDTO.setNavigateSheetName("New User");
+
+        List<HyperLinkDTO> linkDTOS =  new ArrayList<>();
+        linkDTOS.add(hyperLinkDTO);
+
+
+        ExcelUtils.setHyperLink(linkDTOS, file);
+    }
+}
