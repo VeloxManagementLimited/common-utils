@@ -432,8 +432,8 @@ public class DateTimeUtils {
         Date now = DateTimeUtils.nowAtHK();
         Calendar calendar = Calendar.getInstance(DateTimeUtils.DEFAULT_TIMEZONE);
         calendar.setTime(now);
-        calendar.set(Calendar.HOUR_OF_DAY, 14);
-        calendar.set(Calendar.MINUTE, 55);
+        calendar.set(Calendar.HOUR_OF_DAY, 15);
+        calendar.set(Calendar.MINUTE, 2);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         return d.getTime() < calendar.getTime().getTime();

@@ -270,11 +270,11 @@ public class DateTimeUtilsTest {
 
     @Test
     public void testIsBeforeVelotradeCutOffTime() {
-        DateTime d = new DateTime(DateTimeUtils.nowAtHK()).withTime(14, 54, 59, 0).withZoneRetainFields(
+        DateTime d = new DateTime(DateTimeUtils.nowAtHK()).withTime(15, 01, 59, 0).withZoneRetainFields(
                 DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
         Assert.assertTrue(DateTimeUtils.isBeforeVelotradeCutOffTime(d.toDate()));
 
-        d = new DateTime(DateTimeUtils.nowAtHK()).withTime(14, 55, 0, 0).withZoneRetainFields(
+        d = new DateTime(DateTimeUtils.nowAtHK()).withTime(15, 02, 0, 0).withZoneRetainFields(
                 DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
         Assert.assertFalse(DateTimeUtils.isBeforeVelotradeCutOffTime(d.toDate()));
     }
