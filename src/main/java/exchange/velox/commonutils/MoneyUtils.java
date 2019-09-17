@@ -3,6 +3,7 @@ package exchange.velox.commonutils;
 import javax.money.Monetary;
 import javax.money.UnknownCurrencyException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
@@ -159,5 +160,21 @@ public class MoneyUtils {
             return false;
         }
         return true;
+    }
+
+    public static BigDecimal getBigDecimal(Object number) {
+        BigDecimal value = null;
+        if (number != null) {
+            if (number instanceof BigDecimal) {
+                value = (BigDecimal) number;
+            } else if (number instanceof String) {
+                value = new BigDecimal((String) number);
+            } else if (number instanceof BigInteger) {
+                value = new BigDecimal((BigInteger) number);
+            } else if (number instanceof Number) {
+                value = new BigDecimal(((Number) number).doubleValue());
+            }
+        }
+        return value;
     }
 }
