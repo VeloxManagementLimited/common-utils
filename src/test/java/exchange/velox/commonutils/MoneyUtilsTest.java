@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class MoneyUtilsTest {
 
@@ -25,6 +26,23 @@ public class MoneyUtilsTest {
     public void testFloor() {
         Assert.assertEquals(new BigDecimal("100.00"), MoneyUtils.floor(new BigDecimal("100.29")));
         Assert.assertNull(MoneyUtils.cutTo2Decimal(null));
+    }
+
+    @Test
+    public void testGetBigDecimal() {
+        Assert.assertEquals(new BigDecimal("1234.56"), MoneyUtils.getBigDecimal("1234.56"));
+        Assert.assertEquals(new BigDecimal("1234.56"), MoneyUtils.getBigDecimal("1,234.56"));
+
+        Assert.assertEquals(new BigDecimal("1234.56"), MoneyUtils.getBigDecimal(new BigDecimal("1234.56")));
+        Assert.assertTrue(new BigDecimal("1234.00").compareTo(MoneyUtils.getBigDecimal(BigInteger.valueOf(1_234))) == 0);
+
+
+        Assert.assertNotEquals(new BigDecimal("1234.56"), MoneyUtils.getBigDecimal("1,134.56"));
+
+        Assert.assertNull(MoneyUtils.getBigDecimal(""));
+        Assert.assertNull(MoneyUtils.getBigDecimal(" "));
+        Assert.assertNull(MoneyUtils.getBigDecimal(", "));
+        Assert.assertNull(MoneyUtils.getBigDecimal(null));
     }
 
     @Test

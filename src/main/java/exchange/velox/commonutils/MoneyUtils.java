@@ -1,5 +1,7 @@
 package exchange.velox.commonutils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.money.Monetary;
 import javax.money.UnknownCurrencyException;
 import java.math.BigDecimal;
@@ -168,7 +170,11 @@ public class MoneyUtils {
             if (number instanceof BigDecimal) {
                 value = (BigDecimal) number;
             } else if (number instanceof String) {
-                value = new BigDecimal((String) number);
+                String s = StringUtils.remove((String) number, ",");
+                s = StringUtils.remove(s, " ");
+                if (StringUtils.isNotBlank(s)) {
+                    value = new BigDecimal(s);
+                }
             } else if (number instanceof BigInteger) {
                 value = new BigDecimal((BigInteger) number);
             } else if (number instanceof Number) {
