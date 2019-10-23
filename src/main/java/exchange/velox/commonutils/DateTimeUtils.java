@@ -28,6 +28,7 @@ public class DateTimeUtils {
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT;
     public static final SimpleDateFormat SIMPLE_TIME_FORMAT;
     public static final SimpleDateFormat SIMPLE_DATETIME_FORMAT;
+    public static final DateTimeFormatter ISO_DATETIME_FORMAT;
 
     private static final List<String> HOLIDAYS_HK = Arrays.asList(
             "2019-06-07", "2019-07-01", "2019-09-14",
@@ -145,6 +146,30 @@ public class DateTimeUtils {
 
         SIMPLE_DATETIME_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         SIMPLE_DATETIME_FORMAT.setTimeZone(DEFAULT_TIMEZONE);
+
+        ISO_DATETIME_FORMAT = new DateTimeFormatterBuilder()
+                    .appendValue(YEAR, 4, 10, SignStyle.EXCEEDS_PAD)
+
+                    .appendLiteral('-')
+                    .appendValue(MONTH_OF_YEAR, 1, 2, SignStyle.NOT_NEGATIVE)
+
+                    .appendLiteral('-')
+                    .appendValue(DAY_OF_MONTH, 1, 2, SignStyle.NOT_NEGATIVE)
+
+                    .appendLiteral(' ')
+                    .appendValue(HOUR_OF_DAY, 1, 2, SignStyle.NOT_NEGATIVE)
+
+                    .appendLiteral(':')
+                    .appendValue(MINUTE_OF_HOUR, 1, 2, SignStyle.NOT_NEGATIVE)
+
+                    .appendLiteral(':')
+                    .appendValue(SECOND_OF_MINUTE, 1, 2, SignStyle.NOT_NEGATIVE)
+
+                    .appendLiteral('.')
+                    .appendValue(MILLI_OF_SECOND, 1, 3, SignStyle.NOT_NEGATIVE)
+
+                    .toFormatter();
+        ISO_DATETIME_FORMAT.withZone(DEFAULT_TIMEZONE.toZoneId());
     }
 
     public static final DateTimeFormatter FLEXIBLE_ISO_LOCAL_DATE;
@@ -248,6 +273,12 @@ public class DateTimeUtils {
 
     public static Date parseIsoDate(String s) {
         LocalDate date = LocalDate.parse(s, FLEXIBLE_ISO_LOCAL_DATE);
+        ZonedDateTime zonedDateTime = date.atStartOfDay(DEFAULT_TIMEZONE.toZoneId());
+        return Date.from(zonedDateTime.toInstant());
+    }
+
+    public static Date parseIsoDateTime(String s) {
+        LocalDate date = LocalDate.parse(s, ISO_DATETIME_FORMAT);
         ZonedDateTime zonedDateTime = date.atStartOfDay(DEFAULT_TIMEZONE.toZoneId());
         return Date.from(zonedDateTime.toInstant());
     }

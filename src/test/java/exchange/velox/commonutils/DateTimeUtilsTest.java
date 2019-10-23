@@ -168,6 +168,16 @@ public class DateTimeUtilsTest {
     }
 
     @Test
+    public void testParseIsoDateTime() {
+        Date date5 = DateTimeUtils.parseIsoDateTime("2018-12-25 00:00:00.0");
+        Calendar cal5 = Calendar.getInstance(DateTimeUtils.DEFAULT_TIMEZONE);
+        cal5.setTime(date5);
+        Assert.assertEquals(2018, cal5.get(Calendar.YEAR));
+        Assert.assertEquals(11, cal5.get(Calendar.MONTH));
+        Assert.assertEquals(25, cal5.get(Calendar.DAY_OF_MONTH));
+    }
+
+    @Test
     public void testPrintDate() {
         Assert.assertEquals("25/12/2018", DateTimeUtils.printDate(DateTimeUtils.parseIsoDate("2018-12-25")));
         Assert.assertEquals("01/06/2018", DateTimeUtils.printDate(DateTimeUtils.parseIsoDate("2018-06-1")));
@@ -204,6 +214,22 @@ public class DateTimeUtilsTest {
         Date date = Date.from(ldt.atZone(DateTimeUtils.DEFAULT_TIMEZONE.toZoneId()).toInstant());
         String output = DateTimeUtils.formatDate(date, "dd MMM yyyy HH:mm", Locale.ENGLISH, DateTimeUtils.DEFAULT_TIMEZONE);
         Assert.assertEquals("20 May 2018 20:35", output);
+    }
+
+    @Test
+    public void testFormatDate2() {
+        LocalDateTime ldt = LocalDateTime.of(2018, 5, 20, 20, 35, 59, 999);
+        Date date = Date.from(ldt.atZone(DateTimeUtils.DEFAULT_TIMEZONE.toZoneId()).toInstant());
+        String output = DateTimeUtils.formatDate(date, "yyyy-MM-dd", Locale.ENGLISH, DateTimeUtils.DEFAULT_TIMEZONE);
+        Assert.assertEquals("2018-05-20", output);
+    }
+
+    @Test
+    public void testFormatDate3() {
+        LocalDateTime ldt = LocalDateTime.of(2018, 5, 20, 20, 35, 59, 999);
+        Date date = Date.from(ldt.atZone(DateTimeUtils.DEFAULT_TIMEZONE.toZoneId()).toInstant());
+        String output = DateTimeUtils.formatDate(date, "dd-MM-YYYY", Locale.ENGLISH, DateTimeUtils.DEFAULT_TIMEZONE);
+        Assert.assertEquals("20-05-2018", output);
     }
 
     @Test
