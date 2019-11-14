@@ -306,6 +306,23 @@ public class DateTimeUtilsTest {
     }
 
     @Test
+    public void testGetAllHolidays() {
+        DateTime from = new DateTime(DateTimeUtils.nowAtHK()).withDate(2019,9,1).withTime(11, 58, 59, 0).withZoneRetainFields(
+                DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+
+        DateTime to = new DateTime(DateTimeUtils.nowAtHK()).withDate(2019,9,13).withTime(12, 0, 0, 0).withZoneRetainFields(
+                DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+        Assert.assertEquals(1, DateTimeUtils.getHolidays(from.toDate(), to.toDate(), "USD").size());
+
+        from = new DateTime(DateTimeUtils.nowAtHK()).withDate(2019,10,14).withTime(11, 58, 59, 0).withZoneRetainFields(
+                DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+
+        to = new DateTime(DateTimeUtils.nowAtHK()).withDate(2019,12,25).withTime(12, 0, 0, 0).withZoneRetainFields(
+                DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+        Assert.assertEquals(4, DateTimeUtils.getHolidays(from.toDate(), to.toDate(), "USD").size());
+    }
+
+    @Test
     public void testIsBeforeDBSCutOffTime() {
         DateTime d = new DateTime(DateTimeUtils.nowAtHK()).withTime(17, 24, 59, 0).withZoneRetainFields(
                 DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));

@@ -408,6 +408,20 @@ public class DateTimeUtils {
         return !isDateInList(HOLIDAYS_BY_CURRENCY.get(currency), d);
     }
 
+    public static List<Date> getHolidays(Date fromDate, Date toDate, String currency) {
+        List<Date> res = new ArrayList<>();
+        Set<String> holidays = HOLIDAYS_BY_CURRENCY.get(currency);
+        while (daysDiff(fromDate, toDate) >= 0) {
+            Calendar calendar = Calendar.getInstance(DEFAULT_TIMEZONE);
+            calendar.setTime(fromDate);
+            if (holidays.contains(dateToString(calendar))) {
+                res.add(fromDate);
+            }
+            fromDate = plusOneDay(fromDate);
+        }
+        return res;
+    }
+
     public static Date toNextBusinessDateIfNot(Date d) {
         return toNextBusinessDateIfNot(d, "USD");
     }
