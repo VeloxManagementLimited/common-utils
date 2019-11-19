@@ -314,12 +314,39 @@ public class DateTimeUtilsTest {
                 DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
         Assert.assertEquals(1, DateTimeUtils.getHolidays(from.toDate(), to.toDate(), "USD").size());
 
+        // ---
         from = new DateTime(DateTimeUtils.nowAtHK()).withDate(2019,10,14).withTime(11, 58, 59, 0).withZoneRetainFields(
                 DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
 
         to = new DateTime(DateTimeUtils.nowAtHK()).withDate(2019,12,25).withTime(12, 0, 0, 0).withZoneRetainFields(
                 DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
         Assert.assertEquals(4, DateTimeUtils.getHolidays(from.toDate(), to.toDate(), "USD").size());
+
+        // ---
+        from = new DateTime(DateTimeUtils.nowAtHK()).withDate(2019,12,25).withTime(11, 58, 59, 0).withZoneRetainFields(
+                    DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+
+        to = new DateTime(DateTimeUtils.nowAtHK()).withDate(2019,12,25).withTime(12, 0, 0, 0).withZoneRetainFields(
+                    DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+        Assert.assertEquals(1, DateTimeUtils.getHolidays(from.toDate(), to.toDate(), "USD").size());
+
+
+        // ---
+        from = new DateTime(DateTimeUtils.nowAtHK()).withDate(2019,12,24).withTime(11, 58, 59, 0).withZoneRetainFields(
+                    DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+
+        to = new DateTime(DateTimeUtils.nowAtHK()).withDate(2019,12,24).withTime(12, 0, 0, 0).withZoneRetainFields(
+                    DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+        Assert.assertEquals(0, DateTimeUtils.getHolidays(from.toDate(), to.toDate(), "USD").size());
+
+
+        // ---
+        from = new DateTime(DateTimeUtils.nowAtHK()).withDate(2019,12,28).withTime(11, 58, 59, 0).withZoneRetainFields(
+                    DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+
+        to = new DateTime(DateTimeUtils.nowAtHK()).withDate(2019,12,29).withTime(12, 0, 0, 0).withZoneRetainFields(
+                    DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+        Assert.assertEquals(0, DateTimeUtils.getHolidays(from.toDate(), to.toDate(), "USD").size());
     }
 
     @Test
