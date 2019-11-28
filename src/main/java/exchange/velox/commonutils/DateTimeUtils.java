@@ -405,12 +405,12 @@ public class DateTimeUtils {
         if (isWeekend(d)) {
             return false;
         }
-        return !isDateInList(HOLIDAYS_BY_CURRENCY.get(currency), d);
+        return !isDateInList(getHolidaysByCurrency(currency), d);
     }
 
     public static List<Date> getHolidays(Date fromDate, Date toDate, String currency) {
         List<Date> res = new ArrayList<>();
-        Set<String> holidays = HOLIDAYS_BY_CURRENCY.get(currency);
+        Set<String> holidays = getHolidaysByCurrency(currency);
         while (daysDiff(fromDate, toDate) >= 0) {
             Calendar calendar = Calendar.getInstance(DEFAULT_TIMEZONE);
             calendar.setTime(fromDate);
@@ -420,6 +420,14 @@ public class DateTimeUtils {
             fromDate = plusOneDay(fromDate);
         }
         return res;
+    }
+
+    private static Set<String> getHolidaysByCurrency(String currency) {
+        Set<String> result = HOLIDAYS_BY_CURRENCY.get(currency);
+        if (CollectionUtils.isEmpty(result)) {
+            return new HashSet<>(HOLIDAYS_HK);
+        }
+        return result;
     }
 
     public static Date toNextBusinessDateIfNot(Date d) {
