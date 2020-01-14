@@ -359,4 +359,13 @@ public class DateTimeUtilsTest {
                 DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
         Assert.assertFalse(DateTimeUtils.isBeforeDBSCutOffTime(d.toDate()));
     }
+
+    @Test
+    public void testGetYearFromDate() {
+        DateTime dateTime = new DateTime(DateTimeUtils.nowAtHK()).withDate(2019, 12, 28).withTime(11, 58, 59, 0)
+                    .withZoneRetainFields(
+                                DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+        int year = DateTimeUtils.getYearFromDate(dateTime.toDate());
+        Assert.assertEquals(2019, year);
+    }
 }

@@ -502,4 +502,10 @@ public class DateTimeUtils {
         calendar.set(Calendar.MILLISECOND, 0);
         return d.getTime() < calendar.getTime().getTime();
     }
+
+    public static int getYearFromDate(Date d) {
+        Calendar calendar = Calendar.getInstance(DateTimeUtils.DEFAULT_TIMEZONE);
+        calendar.setTime(d);
+        return calendar.get(Calendar.YEAR);
+    }
 }
