@@ -94,10 +94,14 @@ public class VeloFileUtils {
     }
 
     public static byte[] zipFiles(List<FileDTO> files) {
-        return zipFiles(files, null);
+        return zipFiles(files, null, null, false);
     }
 
     public static byte[] zipFiles(List<FileDTO> files, String password) {
+        return zipFiles(files, password, null, false);
+    }
+
+    public static byte[] zipFiles(List<FileDTO> files, String password, String folderName, boolean compressFolder) {
         String tempDirectoryPath = FileUtils.getTempDirectoryPath() + File.separator + UUID.randomUUID().toString();
         File executionDir = new File(tempDirectoryPath);
         if (!executionDir.mkdir() || !executionDir.exists()) {
@@ -105,7 +109,12 @@ public class VeloFileUtils {
         }
 
         try {
-            String filesDirPath = tempDirectoryPath + File.separator + "zip_temp";
+            String filesDirPath;
+            if (StringUtils.isBlank(folderName)) {
+                filesDirPath = tempDirectoryPath + File.separator + "zip_temp";
+            } else {
+                filesDirPath = tempDirectoryPath + File.separator + folderName;
+            }
             File filesDir = new File(filesDirPath);
             filesDir.mkdir();
 
@@ -117,7 +126,7 @@ public class VeloFileUtils {
             // zip executionDir
             String destinationZipFilePath = filesDirPath + ".zip";
             File destination = new File(destinationZipFilePath);
-            addFilesToZip(filesDir, destination, password);
+            addFilesToZip(filesDir, destination, password, compressFolder);
 
             return FileUtils.readFileToByteArray(new File(destinationZipFilePath));
         } catch (Exception e) {
@@ -134,7 +143,8 @@ public class VeloFileUtils {
      * @param destination the zip file that should contain the files
      * @throws ZipException      if destination is null
      */
-    private static void addFilesToZip(File source, File destination, String password) throws ZipException {
+    private static void addFilesToZip(File source, File destination, String password,
+                                      boolean compressFolder) throws ZipException {
         Collection<File> fileList = FileUtils.listFiles(source, null, true);
         ZipParameters zipParameters = new ZipParameters();
         zipParameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
@@ -148,7 +158,11 @@ public class VeloFileUtils {
         }
         
         ZipFile zipFile = new ZipFile(destination);
-        zipFile.addFiles(new ArrayList<>(fileList), zipParameters);
+        if (compressFolder) {
+            zipFile.createZipFileFromFolder(source, zipParameters, false, 0L);
+        } else {
+            zipFile.addFiles(new ArrayList<>(fileList), zipParameters);
+        }
     }
 
     /**
