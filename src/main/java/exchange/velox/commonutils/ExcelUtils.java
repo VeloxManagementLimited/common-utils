@@ -49,6 +49,38 @@ public class ExcelUtils {
         }
     }
 
+    public static byte[] generateNewExcelFile(LinkedHashMap<String, SheetDTO> excelData) {
+        try {
+            LocaleUtil.setUserTimeZone(DateTimeUtils.DEFAULT_TIMEZONE);
+            XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
+            for (String sheetName : excelData.keySet()) {
+                XSSFSheet sheet = xssfWorkbook.createSheet(sheetName);
+                SheetDTO sheetDTO = excelData.get(sheetName);
+                Row headerRow = sheet.createRow(0);
+                int headerCol = 0;
+                for (String header : sheetDTO.getHeaders()) {
+                    Cell cellHeader = headerRow.createCell(headerCol++);
+                    cellHeader.setCellValue(header);
+                }
+
+                int rowCount = 1;
+                for (List<Object> row : sheetDTO.getRows()) {
+                    Row dataRow = sheet.createRow(rowCount++);
+                    int dataColCount = 0;
+                    for (int i = 0; i < row.size(); i++) {
+                        Cell cellData = dataRow.createCell(dataColCount++);
+                        setCellData(xssfWorkbook, row.get(i), cellData);
+                    }
+                }
+            }
+            return convertWorkBookToByteArray(xssfWorkbook);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            LocaleUtil.resetUserTimeZone();
+        }
+    }
+
     public static byte[] setHyperLink(List<HyperLinkDTO> hyperLinkDTOs, byte[] file) {
         try {
             ZipSecureFile.setMinInflateRatio(0);
