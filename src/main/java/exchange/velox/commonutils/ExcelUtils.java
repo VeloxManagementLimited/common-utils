@@ -253,4 +253,34 @@ public class ExcelUtils {
     public static Date convertExcelDate(double val, TimeZone timeZone) {
         return DateUtil.getJavaDate(val, timeZone);
     }
+
+    public static boolean validateHeaders(InputStream inputStream, Set<String> headers) {
+        return headers.equals(getHeaders(inputStream));
+    }
+
+    private static Set<String> getHeaders(InputStream inputStream) {
+        XSSFWorkbook workbook = null;
+        List<List<Object>> headers = new ArrayList<>();
+        try {
+            workbook = new XSSFWorkbook(inputStream);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            Row headerRow = sheet.getRow(0);
+
+            if (headerRow != null) {
+                List<Object> rowData = new ArrayList<>();
+                int colNum = headerRow.getLastCellNum();
+                for (int colIndex = 0; colIndex < colNum; colIndex++) {
+                    Cell cell = headerRow.getCell(colIndex, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                    Object value = handleCellType(cell, cell.getCellTypeEnum());
+                    rowData.add(value);
+                }
+                headers.add(rowData);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return headers.get(0).stream().map(x -> Objects.toString(x, "")).collect(Collectors.toSet());
+    }
 }

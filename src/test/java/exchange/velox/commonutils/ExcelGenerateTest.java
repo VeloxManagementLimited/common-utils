@@ -1,15 +1,14 @@
 package exchange.velox.commonutils;
 
-import org.apache.commons.io.FileUtils;
+import jdk.internal.util.xml.impl.Input;
+import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.File;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 public class ExcelGenerateTest {
     @Test
@@ -79,16 +78,54 @@ public class ExcelGenerateTest {
 
         byte[] file = ExcelUtils.generateExcelFile(excel);
 
-        HyperLinkDTO hyperLinkDTO =  new HyperLinkDTO();
+        HyperLinkDTO hyperLinkDTO = new HyperLinkDTO();
         hyperLinkDTO.setSheetName("User");
         hyperLinkDTO.setColumnName("Name");
         hyperLinkDTO.setRowIndex(2);
         hyperLinkDTO.setNavigateSheetName("New User");
 
-        List<HyperLinkDTO> linkDTOS =  new ArrayList<>();
+        List<HyperLinkDTO> linkDTOS = new ArrayList<>();
         linkDTOS.add(hyperLinkDTO);
 
 
         ExcelUtils.setHyperLink(linkDTOS, file);
+    }
+
+    private byte[] generateExcelFile() {
+        LinkedHashMap<String, SheetDTO> excelData = new LinkedHashMap<>();
+
+        String headerName = "header";
+
+        List<String> headers = new ArrayList<>();
+        headers.add("Name");
+        headers.add("Date");
+        headers.add("Salary");
+
+        List<Object> subRows = new ArrayList<>();
+        subRows.add("Test1");
+        subRows.add("Date1");
+        subRows.add("Salary1");
+        subRows.add("Test2");
+        subRows.add("Date2");
+        subRows.add("Salary2");
+
+        List<List<Object>> rows = new ArrayList<>();
+        rows.add(subRows);
+
+        SheetDTO sheetDTO = new SheetDTO();
+        sheetDTO.setHeaders(headers);
+        sheetDTO.setRows(rows);
+
+        excelData.put(headerName, sheetDTO);
+        return ExcelUtils.generateExcelFile(excelData);
+    }
+
+    @Test
+    public void validateHeader() {
+        byte[] bytes = generateExcelFile();
+        InputStream inputStream = new ByteArrayInputStream(bytes);
+        Set<String> headers = new HashSet<>(Arrays.asList("Name", "Date", "Salary"));
+        boolean isValid = ExcelUtils.validateHeaders(inputStream, headers);
+        Assert.assertTrue(isValid);
     }
 }
