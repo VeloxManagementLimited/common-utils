@@ -100,23 +100,39 @@ public class ExcelGenerateTest {
         headers.add("Date");
         headers.add("Salary");
 
-        List<Object> subRows = new ArrayList<>();
-        subRows.add("Test1");
-        subRows.add("Date1");
-        subRows.add("Salary1");
-        subRows.add("Test2");
-        subRows.add("Date2");
-        subRows.add("Salary2");
-
-        List<List<Object>> rows = new ArrayList<>();
-        rows.add(subRows);
-
         SheetDTO sheetDTO = new SheetDTO();
         sheetDTO.setHeaders(headers);
-        sheetDTO.setRows(rows);
 
         excelData.put(headerName, sheetDTO);
         return ExcelUtils.generateExcelFile(excelData);
+    }
+
+    private byte[] generateExcelFileWithEmptyCell() {
+        LinkedHashMap<String, SheetDTO> excelData = new LinkedHashMap<>();
+
+        String headerName = "header";
+
+        List<String> headers = new ArrayList<>();
+        headers.add("Name");
+        headers.add("Date");
+        headers.add("Salary");
+        headers.add("");
+        headers.add("");
+
+        SheetDTO sheetDTO = new SheetDTO();
+        sheetDTO.setHeaders(headers);
+
+        excelData.put(headerName, sheetDTO);
+        return ExcelUtils.generateExcelFile(excelData);
+    }
+
+    @Test
+    public void validateHeaderWithEmptyCell() {
+        byte[] bytes = generateExcelFileWithEmptyCell();
+        InputStream inputStream = new ByteArrayInputStream(bytes);
+        Set<String> headers = new HashSet<>(Arrays.asList("Name", "Date", "Salary"));
+        boolean isValid = ExcelUtils.validateHeaders(inputStream, headers);
+        Assert.assertTrue(isValid);
     }
 
     @Test

@@ -1,5 +1,6 @@
 package exchange.velox.commonutils;
 
+import org.apache.logging.log4j.util.Strings;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.*;
@@ -281,6 +282,10 @@ public class ExcelUtils {
             throw new RuntimeException(e.getMessage());
         }
 
-        return headers.get(0).stream().map(x -> Objects.toString(x, "")).collect(Collectors.toSet());
+        return headers.get(0).stream()
+                .map(Object::toString)
+                .filter(x -> Strings.isNotEmpty(x))
+                .filter(x -> Strings.isNotBlank(x))
+                .collect(Collectors.toSet());
     }
 }
