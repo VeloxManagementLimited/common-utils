@@ -183,4 +183,11 @@ public class MoneyUtils {
         }
         return value;
     }
+    
+    public static BigDecimal negate(BigDecimal value) {
+        if (value == null) {
+            return null;
+        }
+        return value.abs().negate();
+    }
 }
