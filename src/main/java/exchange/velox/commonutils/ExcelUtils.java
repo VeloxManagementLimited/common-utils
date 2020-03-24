@@ -158,39 +158,33 @@ public class ExcelUtils {
     }
 
     public static List<Map<String, Object>> parseExcelFileToList(InputStream inputStream) throws IOException {
-        XSSFWorkbook workbook = null;
-        try {
-            workbook = new XSSFWorkbook(inputStream);
-            int numberOfSheets = workbook.getNumberOfSheets();
-            List<Map<String, Object>> data = new ArrayList<>();
-            for (int i = 0; i < numberOfSheets; i++) {
-                XSSFSheet sheet = workbook.getSheetAt(i);
-                int rowNum = sheet.getLastRowNum();
-                for (int rowIndex = 1; rowIndex <= rowNum; rowIndex++) {
-                    Map<String, Object> rowMap = new HashMap<>();
-                    Row row = sheet.getRow(rowIndex);
-                    if (row != null) {
-                        int colNum = row.getLastCellNum();
-                        for (int colIndex = 0; colIndex < colNum; colIndex++) {
-                            String header = sheet.getRow(0).getCell(colIndex).getStringCellValue();
-                            Cell cell = row.getCell(colIndex, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                            Object value = handleCellType(cell, cell.getCellTypeEnum());
-                            rowMap.put(header, value);
+        List<Map<String, Object>> data = new ArrayList<>();
+        LinkedHashMap<String, SheetDTO> map = parseExcelFile(inputStream);
+
+        map.forEach((key, value) -> {
+            String sheetName = key;
+            SheetDTO sheetDTO = value;
+            List<String> headers = sheetDTO.getHeaders();
+            List<List<Object>> rows = sheetDTO.getRows();
+            rows.forEach(subRows -> {
+                Map<String, Object> rowMap = new HashMap<>();
+                for (int columnIndex = 0; columnIndex < subRows.size(); columnIndex++) {
+                    try {
+                        String header = headers.get(columnIndex);
+                        String cell = (String) subRows.get(columnIndex);
+                        rowMap.put(header, cell);
+                    } catch (IndexOutOfBoundsException ex) {
+                        String cell = (String) subRows.get(columnIndex);
+                        if (cell != null) {
+                            rowMap.put("EMPTY_HEADER", cell);
                         }
-                        data.add(rowMap);
                     }
                 }
-            }
-            return data;
-        } finally {
-            try {
-                if (workbook != null) {
-                    workbook.close();
-                }
-            } catch (Exception ignored) {
-                //ignore
-            }
-        }
+                data.add(rowMap);
+            });
+        });
+
+        return data;
     }
 
     public static LinkedHashMap parseExcelFile(InputStream inputStream) throws IOException {

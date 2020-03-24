@@ -90,10 +90,10 @@ public class ExcelGenerateTest {
         ExcelUtils.setHyperLink(linkDTOS, file);
     }
 
-    private byte[] generateExcelFile() {
+    private byte[] generateExcelFileWithHeaders() {
         LinkedHashMap<String, SheetDTO> excelData = new LinkedHashMap<>();
 
-        String headerName = "header";
+        String sheetName = "header";
 
         List<String> headers = new ArrayList<>();
         headers.add("Name");
@@ -103,14 +103,14 @@ public class ExcelGenerateTest {
         SheetDTO sheetDTO = new SheetDTO();
         sheetDTO.setHeaders(headers);
 
-        excelData.put(headerName, sheetDTO);
+        excelData.put(sheetName, sheetDTO);
         return ExcelUtils.generateExcelFile(excelData);
     }
 
-    private byte[] generateExcelFileWithEmptyCell() {
+    private byte[] generateExcelFileWithEmptyHeaders() {
         LinkedHashMap<String, SheetDTO> excelData = new LinkedHashMap<>();
 
-        String headerName = "header";
+        String sheetName = "header";
 
         List<String> headers = new ArrayList<>();
         headers.add("Name");
@@ -122,13 +122,52 @@ public class ExcelGenerateTest {
         SheetDTO sheetDTO = new SheetDTO();
         sheetDTO.setHeaders(headers);
 
-        excelData.put(headerName, sheetDTO);
+        excelData.put(sheetName, sheetDTO);
+        return ExcelUtils.generateExcelFile(excelData);
+    }
+
+    private byte[] generateNormalExcelFile() {
+        LinkedHashMap<String, SheetDTO> excelData = new LinkedHashMap<>();
+
+        String sheetName = "header";
+
+        List<String> headers = new ArrayList<>();
+        headers.add("Invoice Number");
+        headers.add("Currency");
+        headers.add("Amount");
+        headers.add("Expected Payment Date\nYYYY-MM-DD");
+        headers.add("Debtor ID");
+
+        List<Object> subRows1 = new ArrayList<>();
+        subRows1.add("INV123456");
+        subRows1.add("USD");
+        subRows1.add("2000");
+        subRows1.add("2020-03-18");
+        subRows1.add("D0001");
+        subRows1.add("*This row is an example");
+
+        List<Object> subRows2 = new ArrayList<>();
+        subRows2.add("INV123456");
+        subRows2.add("USD");
+        subRows2.add("2000");
+        subRows2.add("2020-03-18");
+        subRows2.add("D0001");
+
+        List<List<Object>> rows = new ArrayList<>();
+        rows.add(subRows1);
+        rows.add(subRows2);
+
+        SheetDTO sheetDTO = new SheetDTO();
+        sheetDTO.setHeaders(headers);
+        sheetDTO.setRows(rows);
+
+        excelData.put(sheetName, sheetDTO);
         return ExcelUtils.generateExcelFile(excelData);
     }
 
     @Test
-    public void validateHeaderWithEmptyCell() {
-        byte[] bytes = generateExcelFileWithEmptyCell();
+    public void validateHeaderWithEmptyCellTest() {
+        byte[] bytes = generateExcelFileWithEmptyHeaders();
         InputStream inputStream = new ByteArrayInputStream(bytes);
         Set<String> headers = new HashSet<>(Arrays.asList("Name", "Date", "Salary"));
         boolean isValid = ExcelUtils.validateHeaders(inputStream, headers);
@@ -136,11 +175,30 @@ public class ExcelGenerateTest {
     }
 
     @Test
-    public void validateHeader() {
-        byte[] bytes = generateExcelFile();
+    public void validateHeaderTest() {
+        byte[] bytes = generateExcelFileWithHeaders();
         InputStream inputStream = new ByteArrayInputStream(bytes);
         Set<String> headers = new HashSet<>(Arrays.asList("Name", "Date", "Salary"));
         boolean isValid = ExcelUtils.validateHeaders(inputStream, headers);
         Assert.assertTrue(isValid);
     }
+
+    @Test
+    public void validateFailedHeaderTest() {
+        byte[] bytes = generateExcelFileWithHeaders();
+        InputStream inputStream = new ByteArrayInputStream(bytes);
+        Set<String> headers = new HashSet<>(Arrays.asList("Name", "Date", "Salary", "Failed Cell"));
+        boolean isValid = ExcelUtils.validateHeaders(inputStream, headers);
+        Assert.assertFalse(isValid);
+    }
+
+    @Test
+    public void parseExcelFileToListTest() throws IOException {
+        byte[] bytes = generateNormalExcelFile();
+        InputStream inputStream = new ByteArrayInputStream(bytes);
+        List<Map<String, Object>> rows = ExcelUtils.parseExcelFileToList(inputStream);
+        Assert.assertNotNull(rows);
+        Assert.assertEquals(2, rows.size());
+    }
+
 }
