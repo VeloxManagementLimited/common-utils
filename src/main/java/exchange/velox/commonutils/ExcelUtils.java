@@ -171,10 +171,10 @@ public class ExcelUtils {
                 for (int columnIndex = 0; columnIndex < subRows.size(); columnIndex++) {
                     try {
                         String header = headers.get(columnIndex);
-                        String cell = (String) subRows.get(columnIndex);
+                        Object cell = subRows.get(columnIndex);
                         rowMap.put(header, cell);
                     } catch (IndexOutOfBoundsException ex) {
-                        String cell = (String) subRows.get(columnIndex);
+                        Object cell = subRows.get(columnIndex);
                         if (cell != null) {
                             rowMap.put("EMPTY_HEADER", cell);
                         }
