@@ -164,7 +164,11 @@ public class ExcelUtils {
         map.forEach((key, value) -> {
             String sheetName = key;
             SheetDTO sheetDTO = value;
-            List<String> headers = sheetDTO.getHeaders();
+            List<String> headers = sheetDTO.getHeaders().stream()
+                    .map(Objects::toString)
+                    .filter(header -> Strings.isNotBlank(header))
+                    .filter(header -> Strings.isNotEmpty(header))
+                    .collect(Collectors.toList());
             List<List<Object>> rows = sheetDTO.getRows();
             rows.forEach(subRows -> {
                 Map<String, Object> rowMap = new HashMap<>();
