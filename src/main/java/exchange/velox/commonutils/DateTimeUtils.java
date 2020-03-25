@@ -508,4 +508,11 @@ public class DateTimeUtils {
         calendar.setTime(d);
         return calendar.get(Calendar.YEAR);
     }
+
+    public static Long getDayDifference(Date fromDate, int diff) {
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(fromDate);
+        cal.add(Calendar.DAY_OF_MONTH, diff);
+        return cal.getTime().getTime();
+    }
 }

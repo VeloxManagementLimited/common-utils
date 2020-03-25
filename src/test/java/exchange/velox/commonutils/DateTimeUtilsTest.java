@@ -362,10 +362,22 @@ public class DateTimeUtilsTest {
 
     @Test
     public void testGetYearFromDate() {
-        DateTime dateTime = new DateTime(DateTimeUtils.nowAtHK()).withDate(2019, 12, 28).withTime(11, 58, 59, 0)
-                    .withZoneRetainFields(
-                                DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+        DateTime dateTime = new DateTime(DateTimeUtils.nowAtHK())
+                .withDate(2019, 12, 28)
+                .withTime(11, 58, 59, 0)
+                .withZoneRetainFields(
+                        DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
         int year = DateTimeUtils.getYearFromDate(dateTime.toDate());
         Assert.assertEquals(2019, year);
+    }
+
+    @Test
+    public void testDayDiff() {
+        DateTime dateTime = new DateTime(DateTimeUtils.nowAtHK())
+                .withDate(2019, 12, 28)
+                .withZoneRetainFields(DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+
+        long dayDiff = DateTimeUtils.getDayDifference(dateTime.toDate(), 0);
+        Assert.assertEquals(dayDiff, dateTime.getMillis());
     }
 }
