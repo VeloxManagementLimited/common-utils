@@ -183,6 +183,8 @@ public class ExcelUtils {
                             rowMap.put("EMPTY_HEADER", cell);
                         }
                     }
+                }
+                if (!subRows.isEmpty() && !rowMap.isEmpty()) {
                     data.add(rowMap);
                 }
             });
