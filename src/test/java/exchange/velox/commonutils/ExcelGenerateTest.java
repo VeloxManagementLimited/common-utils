@@ -141,7 +141,7 @@ public class ExcelGenerateTest {
         List<Object> subRows1 = new ArrayList<>();
         subRows1.add("INV123456");
         subRows1.add("USD");
-        subRows1.add("2000");
+        subRows1.add(2000);
         subRows1.add("2020-03-18");
         subRows1.add("D0001");
         subRows1.add("*This row is an example");
@@ -149,7 +149,7 @@ public class ExcelGenerateTest {
         List<Object> subRows2 = new ArrayList<>();
         subRows2.add("INV123456");
         subRows2.add("USD");
-        subRows2.add("2000");
+        subRows2.add(2000);
         subRows2.add("2020-03-18");
         subRows2.add("D0001");
 
@@ -199,6 +199,23 @@ public class ExcelGenerateTest {
         List<Map<String, Object>> rows = ExcelUtils.parseExcelFileToList(inputStream);
         Assert.assertNotNull(rows);
         Assert.assertEquals(2, rows.size());
+        rows.forEach(map -> Assert.assertNotNull(map));
+    }
+
+    @Test
+    public void parseRealExcelFileToListTest() throws IOException {
+        InputStream inputStream = ExcelGenerateTest.class.getClassLoader().getResourceAsStream("Passthrough_Template.xlsx");
+        List<Map<String, Object>> rows = ExcelUtils.parseExcelFileToList(inputStream);
+        Assert.assertNotNull(rows);
+        Assert.assertEquals(20, rows.size());
+        for (Map<String, Object> map : rows) {
+            Assert.assertNotNull(map.get("Invoice Number"));
+            Assert.assertNotNull(map.get("Currency"));
+            Assert.assertNotNull(map.get("Amount"));
+            Assert.assertNotNull(map.get("Expected Payment Date\nYYYY-MM-DD"));
+            Assert.assertNotNull(map.get("Debtor ID"));
+
+        }
     }
 
 }

@@ -175,11 +175,13 @@ public class ExcelUtils {
                 for (int columnIndex = 0; columnIndex < subRows.size(); columnIndex++) {
                     try {
                         String header = headers.get(columnIndex);
-                        Object cell = subRows.get(columnIndex);
-                        rowMap.put(header, cell);
+                        String cell = subRows.get(columnIndex).toString();
+                        if (!Strings.isEmpty(cell)) {
+                            rowMap.put(header, cell);
+                        }
                     } catch (IndexOutOfBoundsException ex) {
-                        Object cell = subRows.get(columnIndex);
-                        if (cell != null) {
+                        String cell = subRows.get(columnIndex).toString();
+                        if (cell != null && !Strings.isEmpty(cell)) {
                             rowMap.put("EMPTY_HEADER", cell);
                         }
                     }
