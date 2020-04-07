@@ -380,4 +380,27 @@ public class DateTimeUtilsTest {
         long dayDiff = DateTimeUtils.getDayDifference(dateTime.toDate(), 0);
         Assert.assertEquals(dayDiff, dateTime.getMillis());
     }
+
+    @Test
+    public void testStartOfDate() {
+        Date date = DateTimeUtils.startOfDate(1);
+        Calendar calendar = Calendar.getInstance(DateTimeUtils.DEFAULT_TIMEZONE);
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.AM_PM, Calendar.AM);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.DATE, 1);
+        Assert.assertEquals(date.getDate(), calendar.getTime().getDate());
+    }
+
+    @Test
+    public void testMidnightOfDate() {
+        Date date = DateTimeUtils.midnightOfDate(1);
+        ZonedDateTime now = ZonedDateTime.now(DateTimeUtils.DEFAULT_TIMEZONE.toZoneId())
+                .plusDays(1);
+        Date newDate = Date.from(now.toInstant());
+        Assert.assertEquals(date.getDate(), newDate.getDate());
+    }
 }

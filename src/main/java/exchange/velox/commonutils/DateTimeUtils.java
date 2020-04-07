@@ -359,10 +359,32 @@ public class DateTimeUtils {
         return calendar.getTime();
     }
 
+    public static Date startOfDate(int plusDays) {
+        Calendar calendar = Calendar.getInstance(DateTimeUtils.DEFAULT_TIMEZONE);
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.AM_PM, Calendar.AM);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.DATE, plusDays);
+        return calendar.getTime();
+    }
+
     public static Date midnightOfToday() {
         ZonedDateTime now = ZonedDateTime.now(DEFAULT_TIMEZONE.toZoneId());
         ZonedDateTime firstDay = now.withHour(23).withMinute(59).withSecond(59).withNano(999_999_999);
         return Date.from(firstDay.toInstant());
+    }
+
+    public static Date midnightOfDate(int plusDays) {
+        ZonedDateTime now = ZonedDateTime.now(DEFAULT_TIMEZONE.toZoneId());
+        ZonedDateTime midnightDate = now.plusDays(plusDays)
+                .withHour(23)
+                .withMinute(59)
+                .withSecond(59)
+                .withNano(999_999_999);
+        return Date.from(midnightDate.toInstant());
     }
 
     public static boolean isWeekend(Date date) {
