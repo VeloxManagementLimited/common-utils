@@ -310,21 +310,6 @@ public class MimeTypes {
         };
     }
 
-    public static void main(String[] args) {
-        System.out.println(mimeTypeMapping.size());
-
-
-        System.out.println(getMimeType("doc"));
-        System.out.println(getMimeType("docx"));
-        System.out.println(getMimeType("xls"));
-        System.out.println(getMimeType("xlsx"));
-        System.out.println(getMimeType("pdf"));
-        System.out.println(getMimeType("ico"));
-        System.out.println(getMimeType("jpg"));
-        System.out.println(getMimeType("png"));
-        System.out.println(getMimeType("xxx"));
-    }
-
     /**
      * Returns the corresponding MIME type to the given extension.
      * If no MIME type was found it returns 'application/octet-stream' type.
@@ -341,7 +326,7 @@ public class MimeTypes {
      * Returns the corresponding MIME type to the given file name.
      * If no MIME type was found it returns 'application/octet-stream' type.
      */
-    private String getMimeTypeFromFileName(String name) {
+    public static String getMimeTypeFromFileName(String name) {
         return getMimeType(StringUtils.lowerCase(StringUtils.trimToEmpty(FilenameUtils.getExtension(name))));
     }
 
