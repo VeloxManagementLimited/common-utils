@@ -10,8 +10,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class ExcelGenerateTest {
-    @Test
-    public void generateExcel() throws IOException {
+    private LinkedHashMap<String, SheetDTO> createExcelData() {
         List<String> headers = new ArrayList<>();
         headers.add("Name");
         headers.add("Date");
@@ -74,6 +73,12 @@ public class ExcelGenerateTest {
 
         excel.put("New User", sheetDTO1);
         excel.put("User", sheetDTO);
+        return excel;
+    }
+
+    @Test
+    public void generateExcel() throws IOException {
+        LinkedHashMap<String, SheetDTO> excel = createExcelData();
 
         byte[] file = ExcelUtils.generateExcelFile(excel);
 
@@ -86,6 +91,23 @@ public class ExcelGenerateTest {
         List<HyperLinkDTO> linkDTOS = new ArrayList<>();
         linkDTOS.add(hyperLinkDTO);
 
+        ExcelUtils.setHyperLink(linkDTOS, file);
+    }
+
+    @Test
+    public void generateExcelWithFilter() throws IOException {
+        LinkedHashMap<String, SheetDTO> excel = createExcelData();
+
+        byte[] file = ExcelUtils.generateExcelFileWithFilter(excel);
+
+        HyperLinkDTO hyperLinkDTO = new HyperLinkDTO();
+        hyperLinkDTO.setSheetName("User");
+        hyperLinkDTO.setColumnName("Name");
+        hyperLinkDTO.setRowIndex(2);
+        hyperLinkDTO.setNavigateSheetName("New User");
+
+        List<HyperLinkDTO> linkDTOS = new ArrayList<>();
+        linkDTOS.add(hyperLinkDTO);
 
         ExcelUtils.setHyperLink(linkDTOS, file);
     }

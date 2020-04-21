@@ -4,6 +4,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.LocaleUtil;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -41,6 +42,48 @@ public class ExcelUtils {
                         setCellData(xssfWorkbook, data, cellData);
                     }
                 }
+            }
+            return convertWorkBookToByteArray(xssfWorkbook);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            LocaleUtil.resetUserTimeZone();
+        }
+    }
+
+    public static byte[] generateExcelFileWithFilter(LinkedHashMap<String, SheetDTO> excelData) {
+        try {
+            LocaleUtil.setUserTimeZone(DateTimeUtils.DEFAULT_TIMEZONE);
+            XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
+            for (String sheetName : excelData.keySet()) {
+                XSSFSheet sheet = xssfWorkbook.createSheet(sheetName);
+                SheetDTO sheetDTO = excelData.get(sheetName);
+                Row headerRow = sheet.createRow(0);
+
+                CellStyle headerStyle = xssfWorkbook.createCellStyle();
+                XSSFFont headerFont = xssfWorkbook.createFont();
+                headerFont.setFontHeightInPoints((short) 10);
+                headerFont.setBold(true);
+                headerStyle.setFont(headerFont);
+
+                int headerCol = 0;
+                for (String header : sheetDTO.getHeaders()) {
+                    Cell cellHeader = headerRow.createCell(headerCol++);
+                    cellHeader.setCellValue(header);
+                    cellHeader.setCellStyle(headerStyle);
+                }
+
+                int rowCount = 1;
+                for (List<Object> row : sheetDTO.getRows()) {
+                    Row dataRow = sheet.createRow(rowCount++);
+                    int dataColCount = 0;
+                    for (Object data : row) {
+                        Cell cellData = dataRow.createCell(dataColCount++);
+                        setCellData(xssfWorkbook, data, cellData);
+                    }
+                }
+
+                sheet.setAutoFilter(new CellRangeAddress(0, rowCount - 1, 0, headerCol - 1));
             }
             return convertWorkBookToByteArray(xssfWorkbook);
         } catch (Exception e) {
