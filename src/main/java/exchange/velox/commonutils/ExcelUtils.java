@@ -5,7 +5,6 @@ import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.SheetUtil;
 import org.apache.poi.util.LocaleUtil;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -73,7 +72,9 @@ public class ExcelUtils {
                     cellHeader.setCellValue(header);
                     cellHeader.setCellStyle(headerStyle);
 
-                    autoResizeColumnWidth(sheet, headerCol - 1);
+                    int headerLength = 0;
+                    if (header != null) headerLength = header.length();
+                    resizeColumnWidth(sheet, headerCol - 1, headerLength);
                 }
 
                 int rowCount = 1;
@@ -96,17 +97,14 @@ public class ExcelUtils {
         }
     }
 
-    private static void autoResizeColumnWidth(XSSFSheet sheet, int column) {
-        int defaultWidth = 10 * 256;
-        int maxWidth = 255 *256;
+    private static void resizeColumnWidth(XSSFSheet sheet, int column, int maxNumCharacters) {
+        double defaultWidth = 10 * 256.0D;
+        double maxWidth = 255 * 256.0D;
+        double width = maxNumCharacters * 1.2 * 256.0D;
 
-        double width = SheetUtil.getColumnWidth(sheet, column, false);
-        if (width != -1.0D) {
-            width = width * 256.0D;
-            width = Math.max(width, defaultWidth);
-            width = Math.min(width, maxWidth);
-            sheet.setColumnWidth(column, (int)width);
-        }
+        width = Math.max(width, defaultWidth);
+        width = Math.min(width, maxWidth);
+        sheet.setColumnWidth(column, (int)width);
     }
 
     public static byte[] setHyperLink(List<HyperLinkDTO> hyperLinkDTOs, byte[] file) {
