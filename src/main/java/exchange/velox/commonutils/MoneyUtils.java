@@ -119,6 +119,15 @@ public class MoneyUtils {
         return amount.setScale(2, RoundingMode.DOWN);
     }
 
+    public static Double cutTo4Double(Double rate) {
+        DecimalFormat decimalFormat = new DecimalFormat("#.####");
+        decimalFormat.setRoundingMode(RoundingMode.DOWN);
+        if (rate == null) {
+            return null;
+        }
+        return Double.valueOf(decimalFormat.format(rate));
+    }
+
     public static BigDecimal halfUp(BigDecimal amount) {
         if (amount == null) {
             return null;

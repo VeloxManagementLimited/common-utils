@@ -16,6 +16,14 @@ public class MoneyUtilsTest {
     }
 
     @Test
+    public void testCutTo4Double() {
+        Assert.assertEquals(Double.valueOf(12345.1234), MoneyUtils.cutTo4Double(12345.12345));
+        Assert.assertEquals(Double.valueOf(100.1234), MoneyUtils.cutTo4Double(100.1234567));
+        Assert.assertEquals(Double.valueOf(1.0123), MoneyUtils.cutTo4Double(1.01234));
+        Assert.assertNull(MoneyUtils.cutTo4Double(null));
+    }
+
+    @Test
     public void testHalfUp() {
         Assert.assertEquals(new BigDecimal("100.56"), MoneyUtils.halfUp(new BigDecimal("100.559")));
         Assert.assertEquals(new BigDecimal("100.45"), MoneyUtils.halfUp(new BigDecimal("100.454")));
