@@ -98,7 +98,7 @@ public class ExcelGenerateTest {
     public void generateExcelWithFilter() throws IOException {
         LinkedHashMap<String, SheetDTO> excel = createExcelData();
 
-        byte[] file = ExcelUtils.generateExcelFileWithFilter(excel);
+        byte[] file = ExcelUtils.generateNewExcelFile(excel, true);
 
         HyperLinkDTO hyperLinkDTO = new HyperLinkDTO();
         hyperLinkDTO.setSheetName("User");

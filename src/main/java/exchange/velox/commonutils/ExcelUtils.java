@@ -51,7 +51,7 @@ public class ExcelUtils {
         }
     }
 
-    public static byte[] generateExcelFileWithFilter(LinkedHashMap<String, SheetDTO> excelData) {
+    public static byte[] generateNewExcelFile(LinkedHashMap<String, SheetDTO> excelData, boolean haveFilter) {
         try {
             LocaleUtil.setUserTimeZone(DateTimeUtils.DEFAULT_TIMEZONE);
             XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
@@ -87,7 +87,9 @@ public class ExcelUtils {
                     }
                 }
 
-                sheet.setAutoFilter(new CellRangeAddress(0, rowCount - 1, 0, headerCol - 1));
+                if (haveFilter) {
+                    sheet.setAutoFilter(new CellRangeAddress(0, rowCount - 1, 0, headerCol - 1));
+                }
             }
             return convertWorkBookToByteArray(xssfWorkbook);
         } catch (Exception e) {
