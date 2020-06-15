@@ -2,14 +2,14 @@ package exchange.velox.commonutils;
 
 import java.io.Serializable;
 
-public class FontDTO implements Serializable {
+public class FontCellDTO implements Serializable {
     private short fontHeightInPoints;
     private String fontName;
     private short color;
     private boolean bold;
     private boolean italic;
 
-    public FontDTO() {
+    public FontCellDTO() {
     }
 
     public short getFontHeightInPoints() {
