@@ -388,7 +388,7 @@ public class ExcelUtils {
 
     private static FontDTO createDefaultFontStyle() {
         FontDTO font = new FontDTO();
-        font.setFontHeightInPoints((short) 10);
+        font.setFontHeightInPoints((short) 11);
         font.setColor(IndexedColors.BLACK.getIndex());
         font.setBold(false);
         font.setItalic(false);
