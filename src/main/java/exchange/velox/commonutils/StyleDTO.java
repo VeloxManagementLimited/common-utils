@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class StyleDTO implements Serializable {
     private FontDTO font;
-    private short backgroundColor;
+    private short backgroundColor = 0;
     private FillPatternType pattern;
     private HorizontalAlignment alignment;
 

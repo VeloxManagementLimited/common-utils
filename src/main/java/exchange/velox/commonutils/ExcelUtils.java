@@ -373,23 +373,22 @@ public class ExcelUtils {
         font.setItalic(style.getFont().isItalic());
 
         header.setFont(font);
-//        header.setFillBackgroundColor(style.getBackgroundColor());
-//        header.setFillPattern(style.getPattern());
+        if (style.getBackgroundColor() != 0) {
+            header.setFillBackgroundColor(style.getBackgroundColor());
+        }
         header.setAlignment(style.getAlignment());
     }
 
     public static StyleDTO buildDefaultExcelStyle() {
         StyleDTO style = new StyleDTO();
         style.setFont(createDefaultFontStyle());
-//        style.setBackgroundColor(IndexedColors.WHITE.getIndex());
         style.setAlignment(HorizontalAlignment.CENTER);
         return style;
     }
 
     private static FontDTO createDefaultFontStyle() {
         FontDTO font = new FontDTO();
-        font.setFontHeightInPoints((short) 12);
-        font.setFontName(DEFAULT_FONT);
+        font.setFontHeightInPoints((short) 10);
         font.setColor(IndexedColors.BLACK.getIndex());
         font.setBold(false);
         font.setItalic(false);
