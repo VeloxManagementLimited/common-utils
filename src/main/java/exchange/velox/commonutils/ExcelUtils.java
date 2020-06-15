@@ -415,7 +415,8 @@ public class ExcelUtils {
 
     private static FontCellDTO createDefaultFontStyle() {
         FontCellDTO font = new FontCellDTO();
-        font.setFontHeightInPoints((short) 11);
+        font.setFontHeightInPoints((short) 10);
+        font.setFontName(DEFAULT_FONT);
         font.setColor(IndexedColors.BLACK.getIndex());
         font.setBold(false);
         font.setItalic(false);
