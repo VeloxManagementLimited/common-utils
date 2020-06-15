@@ -381,15 +381,14 @@ public class ExcelUtils {
     public static StyleDTO buildDefaultExcelStyle() {
         StyleDTO style = new StyleDTO();
         style.setFont(createDefaultFontStyle());
-        style.setBackgroundColor(IndexedColors.WHITE.getIndex());
-        style.setPattern(FillPatternType.SOLID_FOREGROUND);
+//        style.setBackgroundColor(IndexedColors.WHITE.getIndex());
         style.setAlignment(HorizontalAlignment.CENTER);
         return style;
     }
 
     private static FontDTO createDefaultFontStyle() {
         FontDTO font = new FontDTO();
-        font.setFontHeightInPoints((short) 10);
+        font.setFontHeightInPoints((short) 12);
         font.setFontName(DEFAULT_FONT);
         font.setColor(IndexedColors.BLACK.getIndex());
         font.setBold(false);
