@@ -373,8 +373,8 @@ public class ExcelUtils {
         font.setItalic(style.getFont().isItalic());
 
         header.setFont(font);
-        header.setFillBackgroundColor(style.getBackgroundColor());
-        header.setFillPattern(style.getPattern());
+//        header.setFillBackgroundColor(style.getBackgroundColor());
+//        header.setFillPattern(style.getPattern());
         header.setAlignment(style.getAlignment());
     }
 
