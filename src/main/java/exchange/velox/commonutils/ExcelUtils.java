@@ -19,7 +19,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ExcelUtils {
-    public static byte[] generateExcelFile(LinkedHashMap<String, SheetDTO> excelData) {
+    private static final String DEFAULT_FONT = "Arial";
+
+    public static byte[] generateExcelFile(LinkedHashMap<String, SheetDTO> excelData,
+                                           StyleDTO styleDTO) {
         try {
             LocaleUtil.setUserTimeZone(DateTimeUtils.DEFAULT_TIMEZONE);
             XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
@@ -27,10 +30,22 @@ public class ExcelUtils {
                 XSSFSheet sheet = xssfWorkbook.createSheet(sheetName);
                 SheetDTO sheetDTO = excelData.get(sheetName);
                 Row headerRow = sheet.createRow(0);
+
+                CellStyle headerStyle = xssfWorkbook.createCellStyle();
+                XSSFFont headerFont = xssfWorkbook.createFont();
+                createStyle(headerFont, headerStyle, styleDTO);
+
                 int headerCol = 0;
                 for (String header : sheetDTO.getHeaders()) {
                     Cell cellHeader = headerRow.createCell(headerCol++);
                     cellHeader.setCellValue(header);
+                    cellHeader.setCellStyle(headerStyle);
+
+                    int headerLength = 0;
+                    if (null != header) {
+                        headerLength = header.length();
+                    }
+                    resizeColumnWidth(sheet, headerCol - 1, headerLength);
                 }
 
                 int rowCount = 1;
@@ -348,5 +363,37 @@ public class ExcelUtils {
                 .filter(x -> Strings.isNotEmpty(x))
                 .filter(x -> Strings.isNotBlank(x))
                 .collect(Collectors.toSet());
+    }
+
+    private static void createStyle(XSSFFont font,
+                                    CellStyle header,
+                                    StyleDTO style) {
+        font.setFontHeightInPoints(style.getFont().getFontHeightInPoints());
+        font.setBold(style.getFont().isBold());
+        font.setItalic(style.getFont().isItalic());
+
+        header.setFont(font);
+        header.setFillBackgroundColor(style.getBackgroundColor());
+        header.setFillPattern(style.getPattern());
+        header.setAlignment(style.getAlignment());
+    }
+
+    public static StyleDTO buildDefaultExcelStyle() {
+        StyleDTO style = new StyleDTO();
+        style.setFont(createDefaultFontStyle());
+        style.setBackgroundColor(IndexedColors.WHITE.getIndex());
+        style.setPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setAlignment(HorizontalAlignment.CENTER);
+        return style;
+    }
+
+    private static FontDTO createDefaultFontStyle() {
+        FontDTO font = new FontDTO();
+        font.setFontHeightInPoints((short) 10);
+        font.setFontName(DEFAULT_FONT);
+        font.setColor(IndexedColors.BLACK.getIndex());
+        font.setBold(false);
+        font.setItalic(false);
+        return font;
     }
 }
