@@ -374,7 +374,10 @@ public class ExcelUtils {
 
         header.setFont(font);
         if (style.getBackgroundColor() != 0) {
-            header.setFillBackgroundColor(style.getBackgroundColor());
+            header.setFillForegroundColor(style.getBackgroundColor());
+        }
+        if (null != style.getPattern()) {
+            header.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         }
         header.setAlignment(style.getAlignment());
     }
