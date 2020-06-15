@@ -391,6 +391,18 @@ public class ExcelUtils {
         if (null != style.getBorderRight()) {
             header.setBorderRight(style.getBorderRight());
         }
+        if (style.getBorderTopColor() != 0) {
+            header.setTopBorderColor(style.getBorderTopColor());
+        }
+        if (style.getBorderBottomColor() != 0) {
+            header.setBottomBorderColor(style.getBorderBottomColor());
+        }
+        if (style.getBorderLeftColor() != 0) {
+            header.setLeftBorderColor(style.getBorderLeftColor());
+        }
+        if (style.getBorderRightColor() != 0) {
+            header.setRightBorderColor(style.getBorderRightColor());
+        }
         header.setAlignment(style.getAlignment());
     }
 

@@ -15,6 +15,42 @@ public class StyleCellDTO implements Serializable {
     private BorderStyle borderBottom;
     private BorderStyle borderLeft;
     private BorderStyle borderRight;
+    private short borderTopColor = 0;
+    private short borderBottomColor = 0;
+    private short borderLeftColor = 0;
+    private short borderRightColor = 0;
+
+    public short getBorderTopColor() {
+        return borderTopColor;
+    }
+
+    public void setBorderTopColor(short borderTopColor) {
+        this.borderTopColor = borderTopColor;
+    }
+
+    public short getBorderBottomColor() {
+        return borderBottomColor;
+    }
+
+    public void setBorderBottomColor(short borderBottomColor) {
+        this.borderBottomColor = borderBottomColor;
+    }
+
+    public short getBorderLeftColor() {
+        return borderLeftColor;
+    }
+
+    public void setBorderLeftColor(short borderLeftColor) {
+        this.borderLeftColor = borderLeftColor;
+    }
+
+    public short getBorderRightColor() {
+        return borderRightColor;
+    }
+
+    public void setBorderRightColor(short borderRightColor) {
+        this.borderRightColor = borderRightColor;
+    }
 
     public BorderStyle getBorderTop() {
         return borderTop;
