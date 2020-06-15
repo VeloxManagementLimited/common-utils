@@ -80,7 +80,7 @@ public class ExcelGenerateTest {
     public void generateExcel() throws IOException {
         LinkedHashMap<String, SheetDTO> excel = createExcelData();
 
-        byte[] file = ExcelUtils.generateExcelFile(excel);
+        byte[] file = ExcelUtils.generateExcelFile(excel, ExcelUtils.buildDefaultExcelStyle());
 
         HyperLinkDTO hyperLinkDTO = new HyperLinkDTO();
         hyperLinkDTO.setSheetName("User");
@@ -126,7 +126,7 @@ public class ExcelGenerateTest {
         sheetDTO.setHeaders(headers);
 
         excelData.put(sheetName, sheetDTO);
-        return ExcelUtils.generateExcelFile(excelData);
+        return ExcelUtils.generateExcelFile(excelData, ExcelUtils.buildDefaultExcelStyle());
     }
 
     private byte[] generateExcelFileWithEmptyHeaders() {
@@ -145,7 +145,7 @@ public class ExcelGenerateTest {
         sheetDTO.setHeaders(headers);
 
         excelData.put(sheetName, sheetDTO);
-        return ExcelUtils.generateExcelFile(excelData);
+        return ExcelUtils.generateExcelFile(excelData, ExcelUtils.buildDefaultExcelStyle());
     }
 
     private byte[] generateNormalExcelFile() {
@@ -184,7 +184,7 @@ public class ExcelGenerateTest {
         sheetDTO.setRows(rows);
 
         excelData.put(sheetName, sheetDTO);
-        return ExcelUtils.generateExcelFile(excelData);
+        return ExcelUtils.generateExcelFile(excelData, ExcelUtils.buildDefaultExcelStyle());
     }
 
     @Test
