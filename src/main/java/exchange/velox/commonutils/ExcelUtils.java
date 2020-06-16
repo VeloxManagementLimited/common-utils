@@ -121,7 +121,7 @@ public class ExcelUtils {
 
         width = Math.max(width, defaultWidth);
         width = Math.min(width, maxWidth);
-        sheet.setColumnWidth(column, (int)width);
+        sheet.setColumnWidth(column, (int) width);
     }
 
     public static byte[] setHyperLink(List<HyperLinkDTO> hyperLinkDTOs, byte[] file) {
@@ -368,7 +368,9 @@ public class ExcelUtils {
     private static void createStyle(XSSFFont font,
                                     CellStyle header,
                                     StyleCellDTO style) {
-        font.setFontHeightInPoints(style.getFont().getFontHeightInPoints());
+        if (style.getFont().getFontHeightInPoints() != 0) {
+            font.setFontHeightInPoints(style.getFont().getFontHeightInPoints());
+        }
         font.setBold(style.getFont().isBold());
         font.setItalic(style.getFont().isItalic());
 
@@ -406,7 +408,7 @@ public class ExcelUtils {
         header.setAlignment(style.getAlignment());
     }
 
-    public static StyleCellDTO buildDefaultExcelStyle() {
+    public static StyleCellDTO createDefaultCellStyle() {
         StyleCellDTO style = new StyleCellDTO();
         style.setFont(createDefaultFontStyle());
         style.setAlignment(HorizontalAlignment.CENTER);
@@ -415,10 +417,10 @@ public class ExcelUtils {
 
     private static FontCellDTO createDefaultFontStyle() {
         FontCellDTO font = new FontCellDTO();
-        font.setFontHeightInPoints((short) 10);
+        font.setFontHeightInPoints((short) 11);
         font.setFontName(DEFAULT_FONT);
         font.setColor(IndexedColors.BLACK.getIndex());
-        font.setBold(false);
+        font.setBold(true);
         font.setItalic(false);
         return font;
     }

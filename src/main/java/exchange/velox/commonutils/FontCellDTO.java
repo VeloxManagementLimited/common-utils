@@ -3,9 +3,9 @@ package exchange.velox.commonutils;
 import java.io.Serializable;
 
 public class FontCellDTO implements Serializable {
-    private short fontHeightInPoints;
+    private short fontHeightInPoints = 0;
     private String fontName;
-    private short color;
+    private short color = 0;
     private boolean bold;
     private boolean italic;
 
