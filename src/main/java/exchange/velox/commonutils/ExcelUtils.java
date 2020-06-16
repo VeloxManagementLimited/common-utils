@@ -21,8 +21,7 @@ import java.util.stream.Collectors;
 public class ExcelUtils {
     private static final String DEFAULT_FONT = "Arial";
 
-    public static byte[] generateExcelFile(LinkedHashMap<String, SheetDTO> excelData,
-                                           StyleCellDTO styleCellDTO) {
+    public static byte[] generateExcelFile(LinkedHashMap<String, SheetDTO> excelData) {
         try {
             LocaleUtil.setUserTimeZone(DateTimeUtils.DEFAULT_TIMEZONE);
             XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
@@ -31,16 +30,20 @@ public class ExcelUtils {
                 SheetDTO sheetDTO = excelData.get(sheetName);
                 Row headerRow = sheet.createRow(0);
 
-                CellStyle headerStyle = xssfWorkbook.createCellStyle();
-                XSSFFont headerFont = xssfWorkbook.createFont();
-                createStyle(headerFont, headerStyle, styleCellDTO);
+                CellStyle headerStyle = null;
+                if (null != sheetDTO.getHeaderStyle()) {
+                    headerStyle = xssfWorkbook.createCellStyle();
+                    XSSFFont headerFont = xssfWorkbook.createFont();
+                    createStyle(headerFont, headerStyle, sheetDTO.getHeaderStyle());
+                }
 
                 int headerCol = 0;
                 for (String header : sheetDTO.getHeaders()) {
                     Cell cellHeader = headerRow.createCell(headerCol++);
                     cellHeader.setCellValue(header);
-                    cellHeader.setCellStyle(headerStyle);
-
+                    if (null != headerStyle) {
+                        cellHeader.setCellStyle(headerStyle);
+                    }
                     int headerLength = 0;
                     if (null != header) {
                         headerLength = header.length();
