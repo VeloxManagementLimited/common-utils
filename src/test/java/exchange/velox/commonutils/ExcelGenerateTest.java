@@ -94,24 +94,6 @@ public class ExcelGenerateTest {
         ExcelUtils.setHyperLink(linkDTOS, file);
     }
 
-    @Test
-    public void generateExcelWithFilter() throws IOException {
-        LinkedHashMap<String, SheetDTO> excel = createExcelData();
-
-        byte[] file = ExcelUtils.generateNewExcelFile(excel, true);
-
-        HyperLinkDTO hyperLinkDTO = new HyperLinkDTO();
-        hyperLinkDTO.setSheetName("User");
-        hyperLinkDTO.setColumnName("Name");
-        hyperLinkDTO.setRowIndex(2);
-        hyperLinkDTO.setNavigateSheetName("New User");
-
-        List<HyperLinkDTO> linkDTOS = new ArrayList<>();
-        linkDTOS.add(hyperLinkDTO);
-
-        ExcelUtils.setHyperLink(linkDTOS, file);
-    }
-
     private byte[] generateExcelFileWithHeaders() {
         LinkedHashMap<String, SheetDTO> excelData = new LinkedHashMap<>();
 

@@ -19,6 +19,8 @@ public class StyleCellDTO implements Serializable {
     private short borderBottomColor = 0;
     private short borderLeftColor = 0;
     private short borderRightColor = 0;
+    private boolean haveFilter = false;
+
 
     public short getBorderTopColor() {
         return borderTopColor;
@@ -114,5 +116,13 @@ public class StyleCellDTO implements Serializable {
 
     public void setAlignment(HorizontalAlignment alignment) {
         this.alignment = alignment;
+    }
+
+    public boolean isHaveFilter() {
+        return haveFilter;
+    }
+
+    public void setHaveFilter(boolean haveFilter) {
+        this.haveFilter = haveFilter;
     }
 }
