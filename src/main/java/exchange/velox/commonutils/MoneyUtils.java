@@ -135,6 +135,21 @@ public class MoneyUtils {
         return amount.setScale(2, RoundingMode.HALF_UP);
     }
 
+    public static BigDecimal roundToThoundsandIfLarger(BigDecimal amount){
+        return roundToNumberIfLarger(amount, 1_000);
+    }
+
+    public static BigDecimal roundToNumberIfLarger(BigDecimal amount, long number) {
+        if (amount == null) {
+            return null;
+        }
+        BigDecimal numberDecimal = BigDecimal.valueOf(number);
+        if (amount.compareTo(numberDecimal) < 1) {
+            return amount;
+        }
+        return amount.divide(numberDecimal,0, RoundingMode.DOWN).multiply(numberDecimal);
+    }
+
     /**
      * To make sure we dont get ArithmeticException when the result is infinite float number
      * @param amount
