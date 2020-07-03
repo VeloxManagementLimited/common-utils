@@ -55,10 +55,10 @@ public class MoneyUtilsTest {
 
     @Test
     public void testRoundToThoundsandIfLarger(){
-        Assert.assertEquals(new BigDecimal("11000"), MoneyUtils.roundToThoundsandIfLarger(new BigDecimal("11051.12")));
-        Assert.assertEquals(new BigDecimal("955.12"), MoneyUtils.roundToThoundsandIfLarger(new BigDecimal("955.12")));
-        Assert.assertEquals(new BigDecimal("3.123"), MoneyUtils.roundToThoundsandIfLarger(new BigDecimal("3.123")));
-        Assert.assertNull(MoneyUtils.roundToThoundsandIfLarger(null));
+        Assert.assertEquals(new BigDecimal("11000"), MoneyUtils.roundToThousandIfLarger(new BigDecimal("11051.12")));
+        Assert.assertEquals(new BigDecimal("955.12"), MoneyUtils.roundToThousandIfLarger(new BigDecimal("955.12")));
+        Assert.assertEquals(new BigDecimal("3.123"), MoneyUtils.roundToThousandIfLarger(new BigDecimal("3.123")));
+        Assert.assertNull(MoneyUtils.roundToThousandIfLarger(null));
     }
 
     @Test

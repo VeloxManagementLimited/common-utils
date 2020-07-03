@@ -135,7 +135,7 @@ public class MoneyUtils {
         return amount.setScale(2, RoundingMode.HALF_UP);
     }
 
-    public static BigDecimal roundToThoundsandIfLarger(BigDecimal amount){
+    public static BigDecimal roundToThousandIfLarger(BigDecimal amount){
         return roundToNumberIfLarger(amount, 1_000);
     }
 
