@@ -525,6 +525,17 @@ public class DateTimeUtils {
         return d.getTime() < calendar.getTime().getTime();
     }
 
+    public static boolean isBeforeCitiCutOffTime(Date d) {
+        Date now = DateTimeUtils.nowAtHK();
+        Calendar calendar = Calendar.getInstance(DateTimeUtils.DEFAULT_TIMEZONE);
+        calendar.setTime(now);
+        calendar.set(Calendar.HOUR_OF_DAY, 17);
+        calendar.set(Calendar.MINUTE, 25);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return d.getTime() < calendar.getTime().getTime();
+    }
+
     public static int getYearFromDate(Date d) {
         Calendar calendar = Calendar.getInstance(DateTimeUtils.DEFAULT_TIMEZONE);
         calendar.setTime(d);
