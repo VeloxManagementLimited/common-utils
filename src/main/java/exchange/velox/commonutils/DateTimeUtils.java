@@ -537,4 +537,11 @@ public class DateTimeUtils {
         cal.add(Calendar.DAY_OF_MONTH, diff);
         return cal.getTime().getTime();
     }
+
+    public static Date getInputDateTime(Date date, int minute) {
+        Calendar calendar = Calendar.getInstance(DateTimeUtils.DEFAULT_TIMEZONE);
+        calendar.setTime(date);
+        calendar.add(Calendar.MINUTE, minute);
+        return calendar.getTime();
+    }
 }
