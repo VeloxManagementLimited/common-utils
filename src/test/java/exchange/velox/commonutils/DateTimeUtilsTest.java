@@ -1,6 +1,5 @@
 package exchange.velox.commonutils;
 
-import org.apache.poi.ss.util.DateFormatConverter;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Assert;
@@ -408,11 +407,9 @@ public class DateTimeUtilsTest {
     @Test
     public void testGetInputDateTime() {
         Date now = DateTimeUtils.nowAtHK();
-        Calendar calendar = Calendar.getInstance(DateTimeUtils.DEFAULT_TIMEZONE);
-        calendar.setTime(now);
-        calendar.add(Calendar.MINUTE, 5);
-        Date fiveMinuteFromNow = DateTimeUtils.getInputDateTime(now, 5);
-        Assert.assertNotEquals(now.getTime(), fiveMinuteFromNow.getTime());
-        Assert.assertEquals(calendar.getTime(), fiveMinuteFromNow);
+        DateTime dateTime = new DateTime(now);
+        DateTime fiveMinuteFromNow = DateTimeUtils.getMinusMinutes(now, -5);
+        Assert.assertNotEquals(now.getTime(), fiveMinuteFromNow.getMillis());
+        Assert.assertEquals(dateTime.minusMinutes(-5).getMillis(), fiveMinuteFromNow.getMillis());
     }
 }

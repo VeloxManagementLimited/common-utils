@@ -549,10 +549,8 @@ public class DateTimeUtils {
         return cal.getTime().getTime();
     }
 
-    public static Date getInputDateTime(Date date, int minute) {
-        Calendar calendar = Calendar.getInstance(DateTimeUtils.DEFAULT_TIMEZONE);
-        calendar.setTime(date);
-        calendar.add(Calendar.MINUTE, minute);
-        return calendar.getTime();
+    public static DateTime getMinusMinutes(Date date, int minute) {
+        DateTime dtOrg = new DateTime(date);
+        return dtOrg.minusMinutes(minute);
     }
 }
