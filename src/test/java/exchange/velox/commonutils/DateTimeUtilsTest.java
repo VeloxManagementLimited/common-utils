@@ -406,10 +406,20 @@ public class DateTimeUtilsTest {
 
     @Test
     public void testGetInputDateTime() {
-        Date now = DateTimeUtils.nowAtHK();
-        DateTime dateTime = new DateTime(now);
-        DateTime fiveMinuteFromNow = DateTimeUtils.getMinusMinutes(now, -5);
-        Assert.assertNotEquals(now.getTime(), fiveMinuteFromNow.getMillis());
-        Assert.assertEquals(dateTime.minusMinutes(-5).getMillis(), fiveMinuteFromNow.getMillis());
+        DateTime d = new DateTime(DateTimeUtils.nowAtHK()).withTime(17, 24, 59, 0).withZoneRetainFields(
+                    DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+        Date fiveMinutesAgo = DateTimeUtils.minusMinutes(d.toDate(), 5);
+        Assert.assertEquals(19, fiveMinutesAgo.getMinutes());
+
+        d = new DateTime(DateTimeUtils.nowAtHK()).withTime(0, 4, 59, 0).withZoneRetainFields(
+                    DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+        fiveMinutesAgo = DateTimeUtils.minusMinutes(d.toDate(), 5);
+        Assert.assertEquals(59, fiveMinutesAgo.getMinutes());
+
+
+        d = new DateTime(DateTimeUtils.nowAtHK()).withTime(17, 24, 59, 0).withZoneRetainFields(
+                    DateTimeZone.forTimeZone(DateTimeUtils.DEFAULT_TIMEZONE));
+        Date zeroMinutesAgo = DateTimeUtils.minusMinutes(d.toDate(), 0);
+        Assert.assertEquals(d.toDate(), zeroMinutesAgo);
     }
 }

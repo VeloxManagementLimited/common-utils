@@ -247,6 +247,14 @@ public class DateTimeUtils {
         return dtOrg.minusDays(days).toDate();
     }
 
+    public static Date minusMinutes(Date d, int minutes) {
+        if (d == null) {
+            return null;
+        }
+        DateTime dt = new DateTime(d);
+        return dt.minusMinutes(minutes).toDate();
+    }
+
     public static Date plusDays(Date d, int days) {
         if (d == null) {
             return null;
@@ -547,10 +555,5 @@ public class DateTimeUtils {
         cal.setTime(fromDate);
         cal.add(Calendar.DAY_OF_MONTH, diff);
         return cal.getTime().getTime();
-    }
-
-    public static DateTime getMinusMinutes(Date date, int minute) {
-        DateTime dtOrg = new DateTime(date);
-        return dtOrg.minusMinutes(minute);
     }
 }
