@@ -214,4 +214,14 @@ public class MoneyUtils {
         }
         return value.abs().negate();
     }
+
+    public static boolean equal(BigDecimal val1, BigDecimal val2) {
+        if (val1 == null && val2 == null) {
+            return true;
+        }
+        if (val1 == null || val2 == null) {
+            return false;
+        }
+        return val1.compareTo(val2) == 0;
+    }
 }
