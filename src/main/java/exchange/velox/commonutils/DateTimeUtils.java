@@ -255,6 +255,14 @@ public class DateTimeUtils {
         return dtOrg.plusDays(days).toDate();
     }
 
+    public static Date plusHours(Date d, int hours) {
+        if (d == null) {
+            return null;
+        }
+        DateTime dtOrg = new DateTime(d);
+        return dtOrg.plusHours(hours).toDate();
+    }
+
     public static Date parseIsoDateOrInfinitePast(String s) {
         if (StringUtils.isNotBlank(s)) {
             return parseIsoDate(s);
