@@ -3,7 +3,11 @@ package exchange.velox.commonutils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +16,7 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class VeloTextUtils {
+    private static Logger log = LogManager.getLogger(VeloTextUtils.class);
     private static final JaroWinklerDistance jaroWinklerDistance = new JaroWinklerDistance();
 
     private static Pattern NONLATIN = Pattern.compile("[^\\w-]");
@@ -75,5 +80,20 @@ public class VeloTextUtils {
 
     private static Double calculateJaroWinklerDistance(String s1, String s2) {
         return jaroWinklerDistance.apply(s1, s2);
+    }
+
+    public static String getMD5Hash(String data) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            byte[] hash = digest.digest(data.getBytes("UTF-8"));
+            return bytesToHex(hash);
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    private static String bytesToHex(byte[] hash) {
+        return DatatypeConverter.printHexBinary(hash).toLowerCase();
     }
 }

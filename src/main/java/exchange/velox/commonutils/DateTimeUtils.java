@@ -247,6 +247,14 @@ public class DateTimeUtils {
         return dtOrg.minusDays(days).toDate();
     }
 
+    public static Date minusMinutes(Date d, int minutes) {
+        if (d == null) {
+            return null;
+        }
+        DateTime dt = new DateTime(d);
+        return dt.minusMinutes(minutes).toDate();
+    }
+
     public static Date plusDays(Date d, int days) {
         if (d == null) {
             return null;
