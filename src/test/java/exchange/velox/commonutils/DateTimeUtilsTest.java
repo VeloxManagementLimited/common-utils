@@ -422,4 +422,20 @@ public class DateTimeUtilsTest {
         Date zeroMinutesAgo = DateTimeUtils.minusMinutes(d.toDate(), 0);
         Assert.assertEquals(d.toDate(), zeroMinutesAgo);
     }
+
+    @Test
+    public void testFirstDayOfWeek() {
+        Date firstDayOfWeek = DateTimeUtils.firstDayOfWeek();
+        Assert.assertEquals(0, firstDayOfWeek.getDay());
+        Assert.assertEquals(0, firstDayOfWeek.getMinutes());
+        Assert.assertEquals(23, firstDayOfWeek.getHours());
+    }
+
+    @Test
+    public void testLastDayOfWeek() {
+        Date lastDayOfWeek = DateTimeUtils.lastDayOfWeek();
+        Assert.assertEquals(59, lastDayOfWeek.getMinutes());
+        Assert.assertEquals(0, lastDayOfWeek.getDay());
+        Assert.assertEquals(59, lastDayOfWeek.getSeconds());
+    }
 }

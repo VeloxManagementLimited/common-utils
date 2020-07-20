@@ -3,6 +3,7 @@ package exchange.velox.commonutils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -563,5 +564,26 @@ public class DateTimeUtils {
         cal.setTime(fromDate);
         cal.add(Calendar.DAY_OF_MONTH, diff);
         return cal.getTime().getTime();
+    }
+
+    public static Date firstDayOfWeek() {
+        DateTime dateTime = new DateTime();
+        return dateTime.withZone(DateTimeZone.forTimeZone(DEFAULT_TIMEZONE))
+                .withDayOfWeek(1)
+                .withHourOfDay(0)
+                .withMinuteOfHour(0)
+                .withSecondOfMinute(0)
+                .withMillisOfSecond(0)
+                .toDate();
+    }
+
+    public static Date lastDayOfWeek() {
+        return new DateTime().withZone(DateTimeZone.forTimeZone(DEFAULT_TIMEZONE))
+                .withDayOfWeek(7)
+                .withHourOfDay(23)
+                .withMinuteOfHour(59)
+                .withSecondOfMinute(59)
+                .withMillisOfSecond(59)
+                .toDate();
     }
 }
