@@ -73,6 +73,26 @@ public class ExcelUtils {
         }
     }
 
+    /**
+     * please use generateExcelFile directly.
+     * @param excelData
+     * @param haveFilter
+     * @return
+     */
+    @Deprecated
+    public static byte[] generateNewExcelFile(LinkedHashMap<String, SheetDTO> excelData, boolean haveFilter) {
+        for (String sheetName : excelData.keySet()) {
+            SheetDTO sheetDTO = excelData.get(sheetName);
+            if (sheetDTO.getHeaderStyle() == null) {
+                sheetDTO.setHeaderStyle(createDefaultCellStyle());
+            }
+            if (haveFilter) {
+                sheetDTO.getHeaderStyle().setHaveFilter(true);
+            }
+        }
+        return generateExcelFile(excelData);
+    }
+
     private static void resizeColumnWidth(XSSFSheet sheet, int column, int maxNumCharacters) {
         double defaultWidth = 10 * 256.0D;
         double maxWidth = 255 * 256.0D;

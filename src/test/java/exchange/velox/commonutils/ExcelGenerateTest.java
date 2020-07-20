@@ -111,6 +111,23 @@ public class ExcelGenerateTest {
         return ExcelUtils.generateExcelFile(excelData);
     }
 
+    private byte[] generateExcelFileWithHeadersWithOldFilteringWay() {
+        LinkedHashMap<String, SheetDTO> excelData = new LinkedHashMap<>();
+
+        String sheetName = "header";
+
+        List<String> headers = new ArrayList<>();
+        headers.add("Name");
+        headers.add("Date");
+        headers.add("Salary");
+
+        SheetDTO sheetDTO = new SheetDTO();
+        sheetDTO.setHeaders(headers);
+
+        excelData.put(sheetName, sheetDTO);
+        return ExcelUtils.generateNewExcelFile(excelData, true);
+    }
+
     private byte[] generateExcelFileWithEmptyHeaders() {
         LinkedHashMap<String, SheetDTO> excelData = new LinkedHashMap<>();
 
@@ -181,6 +198,15 @@ public class ExcelGenerateTest {
     @Test
     public void validateHeaderTest() {
         byte[] bytes = generateExcelFileWithHeaders();
+        InputStream inputStream = new ByteArrayInputStream(bytes);
+        Set<String> headers = new HashSet<>(Arrays.asList("Name", "Date", "Salary"));
+        boolean isValid = ExcelUtils.validateHeaders(inputStream, headers);
+        Assert.assertTrue(isValid);
+    }
+
+    @Test
+    public void validateHeaderTestWithOldFilteringWay() {
+        byte[] bytes = generateExcelFileWithHeadersWithOldFilteringWay();
         InputStream inputStream = new ByteArrayInputStream(bytes);
         Set<String> headers = new HashSet<>(Arrays.asList("Name", "Date", "Salary"));
         boolean isValid = ExcelUtils.validateHeaders(inputStream, headers);
