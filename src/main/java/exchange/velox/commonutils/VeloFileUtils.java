@@ -12,6 +12,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -177,6 +180,40 @@ public class VeloFileUtils {
         int index = source.getAbsolutePath().length() + 1;
         String path = file.getCanonicalPath();
         return path.substring(index);
+    }
+
+    /**
+     * Decode url, using when pass parameters on rest-template
+     *
+     * @param urlString
+     * @return
+     */
+    public static String decodeURLString(String urlString) {
+        if (urlString != null) {
+            try {
+                return URLDecoder.decode(urlString, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return urlString;
+    }
+
+    /**
+     * Encode url, using when pass parameters on rest-template
+     *
+     * @param urlString
+     * @return
+     */
+    public static String encodeURLString(String urlString) {
+        if (urlString != null) {
+            try {
+                return URLEncoder.encode(urlString, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return urlString;
     }
 }
 
