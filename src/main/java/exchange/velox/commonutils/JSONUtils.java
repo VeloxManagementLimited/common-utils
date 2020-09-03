@@ -2,6 +2,7 @@ package exchange.velox.commonutils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -16,6 +17,11 @@ import org.apache.logging.log4j.Logger;
 public class JSONUtils {
     private static Logger log = LogManager.getLogger(JSONUtils.class);
     private static ObjectMapper objectMapper = new ObjectMapper();
+    static {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+
+    }
     private static ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
     public static Map<String, Object> stringToMap(String json) {
