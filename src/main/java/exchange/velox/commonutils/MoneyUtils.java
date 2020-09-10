@@ -45,6 +45,7 @@ public class MoneyUtils {
             " eighteen",
             " nineteen"
     };
+
     private static final String[] tenMultiples = {
             "",
             "",
@@ -57,6 +58,7 @@ public class MoneyUtils {
             " eighty",
             " ninety"
     };
+
     private static final String[] placeValues = {
             " ",
             " thousand",
