@@ -18,6 +18,53 @@ public class MoneyUtils {
     public static final BigDecimal D_360 = BigDecimal.valueOf(360);
     public static final BigDecimal D_1000 = BigDecimal.valueOf(1_000);
 
+    private static final String INVALID_INPUT_GIVEN = "Invalid input given";
+
+    private static final String[] units = {
+            "",
+            " one",
+            " two",
+            " three",
+            " four",
+            " five",
+            " six",
+            " seven",
+            " eight",
+            " nine"
+    };
+
+    private static final String[] twoDigits = {
+            " ten",
+            " eleven",
+            " twelve",
+            " thirteen",
+            " fourteen",
+            " fifteen",
+            " sixteen",
+            " seventeen",
+            " eighteen",
+            " nineteen"
+    };
+    private static final String[] tenMultiples = {
+            "",
+            "",
+            " twenty",
+            " thirty",
+            " forty",
+            " fifty",
+            " sixty",
+            " seventy",
+            " eighty",
+            " ninety"
+    };
+    private static final String[] placeValues = {
+            " ",
+            " thousand",
+            " million",
+            " billion",
+            " trillion"
+    };
+
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#,##0.00");
 
     public static BigDecimal add(BigDecimal amount1, BigDecimal amount2) {
@@ -223,5 +270,104 @@ public class MoneyUtils {
             return false;
         }
         return val1.compareTo(val2) == 0;
+    }
+
+    public static String getMoneyIntoWords(double money, String currency) {
+        long dollar = (long) money;
+        long cents = Math.round((money - dollar) * 100);
+        if (money == 0D) {
+            return "";
+        }
+        if (money < 0) {
+            return INVALID_INPUT_GIVEN;
+        }
+        String dollarPart = "";
+        if (dollar > 0) {
+            dollarPart = convert(dollar) + getCurrencyIntoWords(dollar, currency);
+        }
+        String centsPart = "";
+        if (cents > 0) {
+            if (dollarPart.length() > 0) {
+                centsPart = " and";
+            }
+            centsPart += convert(cents) + getMinimumMonetaryValue(cents, currency);
+        }
+        return dollarPart + centsPart;
+    }
+
+    private static String getCurrencyIntoWords(long dollar, String currency) {
+        switch (currency) {
+            case "CNY":
+                return "Chinese Yuan";
+            case "EUR":
+                return "Euro";
+            case "GBP":
+                return "Pound Sterling";
+            case "HKD":
+                return "Hong Kong Dollar" + (dollar == 1 ? "" : "s");
+            case "JPY":
+                return "Japanese Yen";
+            case "SGD":
+                return "Singapore Dollar" + (dollar == 1 ? "" : "s");
+            case "USD":
+                return "US Dollar" + (dollar == 1 ? "" : "s");
+            default:
+                return currency;
+        }
+    }
+
+    private static String getMinimumMonetaryValue(long cent, String currency) {
+        switch (currency) {
+            case "CNY":
+                return "fen";
+            case "EUR":
+            case "SGD":
+            case "HKD":
+            case "USD":
+                return "cent" + (cent == 1 ? "" : "s");
+            case "GBP":
+                return "penny";
+            case "JPY":
+                return "sen";
+            default:
+                return currency;
+        }
+    }
+
+    private static String convert(long number) {
+        StringBuilder word = new StringBuilder();
+        int index = 0;
+        do {
+            // take 3 digits in each iteration
+            int num = (int)(number % 1000);
+            if (num != 0){
+                String str = conversionForUpToThreeDigits(num);
+                word.insert(0, str + placeValues[index]);
+            }
+            index++;
+            // next 3 digits
+            number = number/1000;
+        } while (number > 0);
+        return word.toString();
+    }
+
+    private static String conversionForUpToThreeDigits(int number) {
+        String word = "";
+        int num = number % 100;
+        if(num < 10){
+            word = word + units[num];
+        }
+        else if(num < 20){
+            word = word + twoDigits[num%10];
+        }else{
+            word = tenMultiples[num/10] + units[num%10];
+        }
+
+        word = (number/100 > 0)? units[number/100] + " hundred" + word : word;
+        return word;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(MoneyUtils.getMoneyIntoWords(123342343.34534, "USD"));
     }
 }
