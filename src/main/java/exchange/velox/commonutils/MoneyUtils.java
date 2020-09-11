@@ -274,7 +274,7 @@ public class MoneyUtils {
         return val1.compareTo(val2) == 0;
     }
 
-    public static String getMoneyIntoWords(double money, String currency) {
+    static String getMoneyIntoWords(double money, String currency) {
         long dollar = (long) money;
         long cents = Math.round((money - dollar) * 100);
         if (money == 0D) {
@@ -285,7 +285,8 @@ public class MoneyUtils {
         }
         String dollarPart = "";
         if (dollar > 0) {
-            dollarPart = convert(dollar) + getCurrencyIntoWords(dollar, currency);
+            dollarPart = convert(dollar) + (isSpace(convert(dollar)) ? getCurrencyIntoWords(dollar, currency) : " "
+                    + getCurrencyIntoWords(dollar, currency));
         }
         String centsPart = "";
         if (cents > 0) {
@@ -294,7 +295,7 @@ public class MoneyUtils {
             }
             centsPart += convert(cents) + getMinimumMonetaryValue(cents, currency);
         }
-        return dollarPart + centsPart;
+        return (dollarPart + centsPart).substring(1);
     }
 
     private static String getCurrencyIntoWords(long dollar, String currency) {
@@ -321,18 +322,18 @@ public class MoneyUtils {
     private static String getMinimumMonetaryValue(long cent, String currency) {
         switch (currency) {
             case "CNY":
-                return "fen";
+                return "fen" + (cent == 1 ? "" : "s");
             case "EUR":
             case "SGD":
             case "HKD":
             case "USD":
                 return "cent" + (cent == 1 ? "" : "s");
             case "GBP":
-                return "penny";
+                return (cent == 1 ? "penny" : "pennies");
             case "JPY":
-                return "sen";
+                return "sen" + (cent == 1 ? "" : "s");
             default:
-                return currency;
+                return "";
         }
     }
 
@@ -340,15 +341,13 @@ public class MoneyUtils {
         StringBuilder word = new StringBuilder();
         int index = 0;
         do {
-            // take 3 digits in each iteration
-            int num = (int)(number % 1000);
-            if (num != 0){
+            int num = (int) (number % 1000);
+            if (num != 0) {
                 String str = conversionForUpToThreeDigits(num);
                 word.insert(0, str + placeValues[index]);
             }
             index++;
-            // next 3 digits
-            number = number/1000;
+            number = number / 1000;
         } while (number > 0);
         return word.toString();
     }
@@ -356,20 +355,19 @@ public class MoneyUtils {
     private static String conversionForUpToThreeDigits(int number) {
         String word = "";
         int num = number % 100;
-        if(num < 10){
+        if (num < 10) {
             word = word + units[num];
-        }
-        else if(num < 20){
-            word = word + twoDigits[num%10];
-        }else{
-            word = tenMultiples[num/10] + units[num%10];
+        } else if (num < 20) {
+            word = word + twoDigits[num % 10];
+        } else {
+            word = tenMultiples[num / 10] + units[num % 10];
         }
 
-        word = (number/100 > 0)? units[number/100] + " hundred" + word : word;
+        word = (number / 100 > 0) ? units[number / 100] + " hundred" + word : word;
         return word;
     }
 
-    public static void main(String[] args) {
-        System.out.println(MoneyUtils.getMoneyIntoWords(123342343.34534, "USD"));
+    private static boolean isSpace(String string) {
+        return Character.isWhitespace(string.charAt(string.length() - 1));
     }
 }
