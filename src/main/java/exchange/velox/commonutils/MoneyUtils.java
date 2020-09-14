@@ -274,7 +274,7 @@ public class MoneyUtils {
         return val1.compareTo(val2) == 0;
     }
 
-    static String getMoneyIntoWords(double money, String currency) {
+    public static String getMoneyIntoWords(double money, String currency) {
         long dollar = (long) money;
         long cents = Math.round((money - dollar) * 100);
         if (money == 0D) {
