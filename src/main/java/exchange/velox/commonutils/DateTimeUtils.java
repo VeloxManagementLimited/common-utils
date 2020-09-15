@@ -27,6 +27,7 @@ public class DateTimeUtils {
 
 
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT;
+    public static final SimpleDateFormat CUSTOM_DATE_FORMAT;
     public static final SimpleDateFormat SIMPLE_TIME_FORMAT;
     public static final SimpleDateFormat SIMPLE_DATETIME_FORMAT;
     public static final DateTimeFormatter ISO_DATETIME_FORMAT;
@@ -158,6 +159,9 @@ public class DateTimeUtils {
         SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
         SIMPLE_DATE_FORMAT.setTimeZone(DEFAULT_TIMEZONE);
 
+        CUSTOM_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+        CUSTOM_DATE_FORMAT.setTimeZone(DEFAULT_TIMEZONE);
+
         SIMPLE_TIME_FORMAT = new SimpleDateFormat("HH:mm");
         SIMPLE_TIME_FORMAT.setTimeZone(DEFAULT_TIMEZONE);
 
@@ -217,6 +221,13 @@ public class DateTimeUtils {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern, locale);
         sdf.setTimeZone(timeZone);
         return sdf.format(date);
+    }
+
+    public static String printCustomDate(Date d) {
+        if (d == null) {
+            return StringUtils.EMPTY;
+        }
+        return CUSTOM_DATE_FORMAT.format(d);
     }
 
     public static String printDate(Date d) {
