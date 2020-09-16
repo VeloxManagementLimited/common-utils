@@ -5,6 +5,7 @@ import org.joda.time.DateTimeZone;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -12,6 +13,7 @@ import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class DateTimeUtilsTest {
 
@@ -39,6 +41,19 @@ public class DateTimeUtilsTest {
 
         Assert.assertFalse(DateTimeUtils.isTodayInHK(DateTimeUtils.plusDays(now, 1)));
         Assert.assertFalse(DateTimeUtils.isTodayInHK(DateTimeUtils.plusDays(now, -1)));
+    }
+
+
+    @Test
+    public void testPrintCustom() throws ParseException {
+        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date dt  = isoFormat.parse("2020-09-15 15:00:00.0");
+        String date = DateTimeUtils.printCustomDate(dt);
+        Assert.assertEquals(date, "2020-09-15");
+        dt  = isoFormat.parse("2020-09-15 16:00:00.0");
+        date = DateTimeUtils.printCustomDate(dt);
+        Assert.assertEquals(date, "2020-09-16");
     }
 
     @Test
