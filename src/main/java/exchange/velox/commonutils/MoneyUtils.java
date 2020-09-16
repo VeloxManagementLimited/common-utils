@@ -285,17 +285,17 @@ public class MoneyUtils {
         }
         String dollarPart = "";
         if (dollar > 0) {
-            dollarPart = convert(dollar) + (isSpace(convert(dollar)) ? getCurrencyIntoWords(dollar, currency) : " "
-                    + getCurrencyIntoWords(dollar, currency));
+            dollarPart = (isSpace(convert(dollar)) ? getCurrencyIntoWords(dollar, currency) : " "
+                    + getCurrencyIntoWords(dollar, currency)) + convert(dollar);
         }
         String centsPart = "";
         if (cents > 0) {
             if (dollarPart.length() > 0) {
-                centsPart = " and";
+                centsPart = "and";
             }
             centsPart += convert(cents) + getMinimumMonetaryValue(cents, currency);
         }
-        return (dollarPart + centsPart).substring(1);
+        return dollarPart + centsPart;
     }
 
     private static String getCurrencyIntoWords(long dollar, String currency) {
