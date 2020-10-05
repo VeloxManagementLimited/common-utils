@@ -267,6 +267,30 @@ public class DateTimeUtils {
         return dtOrg.plusMonths(months).toDate();
     }
 
+    public static Date plusYears(Date d, int years) {
+        if (d == null) {
+            return null;
+        }
+        DateTime dtOrg = new DateTime(d);
+        return dtOrg.plusYears(years).toDate();
+    }
+
+    public static Date minusYears(Date d, int years) {
+        if (d == null) {
+            return null;
+        }
+        DateTime dtOrg = new DateTime(d);
+        return dtOrg.minusYears(years).toDate();
+    }
+
+    public static Date minusMonths(Date d, int months) {
+        if (d == null) {
+            return null;
+        }
+        DateTime dtOrg = new DateTime(d);
+        return dtOrg.minusMonths(months).toDate();
+    }
+
     public static Date minusDays(Date d, int days) {
         if (d == null) {
             return null;
