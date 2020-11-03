@@ -390,9 +390,15 @@ public class DateTimeUtils {
     public static boolean dateBefore(Date a, Date b) {
         return daysDiff(a, b) > 0;
     }
+    public static boolean dateBeforeOrSame(Date a, Date b) {
+        return daysDiff(a, b) >= 0;
+    }
 
     public static boolean dateAfter(Date a, Date b) {
         return daysDiff(a, b) < 0;
+    }
+    public static boolean dateAfterOrSame(Date a, Date b) {
+        return daysDiff(a, b) <= 0;
     }
 
     public static boolean dateSame(Date a, Date b) {
