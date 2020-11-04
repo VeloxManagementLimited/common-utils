@@ -405,6 +405,18 @@ public class DateTimeUtils {
         return daysDiff(a, b) == 0;
     }
 
+    public static Date max(Date a, Date b) {
+        if (a == null) { return b; }
+        if (b == null) { return a; }
+        return dateAfter(a, b) ? a : b;
+    }
+
+    public static Date min(Date a, Date b) {
+        if (a == null) { return b; }
+        if (b == null) { return a; }
+        return dateBefore(a, b) ? a : b;
+    }
+
     public static long daysDiffAbs(Date inputFrom, Date inputTo) {
         return Math.abs(daysDiff(inputFrom, inputTo));
     }

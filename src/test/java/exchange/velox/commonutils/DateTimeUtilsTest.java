@@ -127,7 +127,10 @@ public class DateTimeUtilsTest {
         Assert.assertTrue(DTU.dateAfter(b, a));
         Assert.assertTrue(DTU.dateAfterOrSame(b, DTU.plusDays(a, 1)));
 
+        Assert.assertEquals(a, DTU.min(a, b));
+        Assert.assertEquals(b, DTU.max(a, b));
 
+        // --------------
         a = Date.from(ZonedDateTime.of(LocalDateTime.of(2018, Month.MAY, 19, 23,
                                                         59, 59), DTU.DEFAULT_TIMEZONE.toZoneId()).toInstant());
         b = Date.from(ZonedDateTime.of(LocalDateTime.of(2018, Month.MAY, 19, 0,
