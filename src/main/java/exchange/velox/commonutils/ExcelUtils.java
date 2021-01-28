@@ -19,12 +19,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ExcelUtils {
+    private enum CellStyleFormat {
+        DATE,
+        MONEY,
+    }
+
     private static final String DEFAULT_FONT = "Arial";
 
     public static byte[] generateExcelFile(LinkedHashMap<String, SheetDTO> excelData) {
         try {
             LocaleUtil.setUserTimeZone(DateTimeUtils.DEFAULT_TIMEZONE);
             XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
+            Map<CellStyleFormat, CellStyle> cellStyleMap = new HashMap<>();
             for (String sheetName : excelData.keySet()) {
                 XSSFSheet sheet = xssfWorkbook.createSheet(sheetName);
                 SheetDTO sheetDTO = excelData.get(sheetName);
@@ -57,7 +63,7 @@ public class ExcelUtils {
                     int dataColCount = 0;
                     for (Object data : row) {
                         Cell cellData = dataRow.createCell(dataColCount++);
-                        setCellData(xssfWorkbook, data, cellData);
+                        setCellData(xssfWorkbook, data, cellData, cellStyleMap);
                     }
                 }
 
@@ -169,20 +175,20 @@ public class ExcelUtils {
         return outputStream.toByteArray();
     }
 
-    private static void setCellData(XSSFWorkbook wb, Object data, Cell cellData) {
+    private static void setCellData(XSSFWorkbook wb, Object data, Cell cellData, Map<CellStyleFormat, CellStyle> cellStyleMap) {
         if (data == null) {
             cellData.setCellValue("");
         } else if (data instanceof Integer) {
             cellData.setCellValue((Integer) data);
         } else if (data instanceof Date) {
             cellData.setCellValue((Date) data);
-            cellData.setCellStyle(getCellStyleDate(wb));
+            cellData.setCellStyle(getCellStyleDate(wb, cellStyleMap));
         } else if (data instanceof BigDecimal) {
             cellData.setCellValue(((BigDecimal)data).doubleValue());
-            cellData.setCellStyle(getCellStyleMoney(wb));
+            cellData.setCellStyle(getCellStyleMoney(wb, cellStyleMap));
         } else if (data instanceof Double) {
             cellData.setCellValue((Double) data);
-            cellData.setCellStyle(getCellStyleMoney(wb));
+            cellData.setCellStyle(getCellStyleMoney(wb, cellStyleMap));
         } else if (data instanceof String) {
             cellData.setCellValue((String) data);
         } else {
@@ -190,12 +196,18 @@ public class ExcelUtils {
         }
     }
 
-    private static CellStyle getCellStyleDate(XSSFWorkbook wb) {
-        return createCellStyleFromIndex(wb, 0xf);
+    private static CellStyle getCellStyleDate(XSSFWorkbook wb, Map<CellStyleFormat, CellStyle> cellStyleMap) {
+        if (!cellStyleMap.containsKey(CellStyleFormat.DATE)) {
+            cellStyleMap.put(CellStyleFormat.DATE, createCellStyleFromIndex(wb, 0xf));
+        }
+        return cellStyleMap.get(CellStyleFormat.DATE);
     }
 
-    private static CellStyle getCellStyleMoney(XSSFWorkbook wb) {
-        return createCellStyleFromIndex(wb, 4);
+    private static CellStyle getCellStyleMoney(XSSFWorkbook wb, Map<CellStyleFormat, CellStyle> cellStyleMap) {
+        if (!cellStyleMap.containsKey(CellStyleFormat.MONEY)) {
+            cellStyleMap.put(CellStyleFormat.MONEY, createCellStyleFromIndex(wb, 4));
+        }
+        return cellStyleMap.get(CellStyleFormat.MONEY);
     }
 
     private static CellStyle getCellStyleInteger(XSSFWorkbook wb) {

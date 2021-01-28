@@ -3,9 +3,7 @@ package exchange.velox.commonutils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -186,6 +184,32 @@ public class ExcelGenerateTest {
         return ExcelUtils.generateExcelFile(excelData);
     }
 
+    private byte[] generateExcelFileWithOver64000CellHaveStyle() {
+        LinkedHashMap<String, SheetDTO> excelData = new LinkedHashMap<>();
+
+        String sheetName = "header";
+
+        List<String> headers = new ArrayList<>();
+        headers.add("Date");
+        headers.add("Money");
+
+        List<List<Object>> rows = new ArrayList<>();
+        for (int i = 0; i < 65000; i++) {
+            List<Object> row = new ArrayList<>();
+            row.add(new Date());
+            row.add(new BigDecimal(i));
+
+            rows.add(row);
+        }
+
+        SheetDTO sheetDTO = new SheetDTO();
+        sheetDTO.setHeaders(headers);
+        sheetDTO.setRows(rows);
+
+        excelData.put(sheetName, sheetDTO);
+        return ExcelUtils.generateExcelFile(excelData);
+    }
+
     @Test
     public void validateHeaderWithEmptyCellTest() {
         byte[] bytes = generateExcelFileWithEmptyHeaders();
@@ -220,6 +244,19 @@ public class ExcelGenerateTest {
         Set<String> headers = new HashSet<>(Arrays.asList("Name", "Date", "Salary", "Failed Cell"));
         boolean isValid = ExcelUtils.validateHeaders(inputStream, headers);
         Assert.assertFalse(isValid);
+    }
+
+    @Test
+    public void validateGenerateExcelFileWithOver64000CellHaveStyle() throws IOException {
+        byte[] bytes = generateExcelFileWithOver64000CellHaveStyle();
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+        List<Map<String, Object>> rows = ExcelUtils.parseExcelFileToList(inputStream);
+        Assert.assertNotNull(rows);
+        Assert.assertEquals(65000, rows.size());
+        for (Map<String, Object> map : rows) {
+            Assert.assertNotNull(map.get("Date"));
+            Assert.assertNotNull(map.get("Money"));
+        }
     }
 
     @Test
