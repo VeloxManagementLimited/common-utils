@@ -20,7 +20,7 @@ public class DateTimeUtilsTest {
 
     @Test
     public void testForceFailed() {
-        Assert.assertTrue("Forcing failed build", false);
+        Assert.assertTrue("Forcing failed build 2nd", false);
     }
 
 
