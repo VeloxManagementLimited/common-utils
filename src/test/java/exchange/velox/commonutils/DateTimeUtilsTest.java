@@ -17,13 +17,6 @@ import java.util.TimeZone;
 
 public class DateTimeUtilsTest {
 
-
-    @Test
-    public void testForceFailed() {
-        Assert.assertTrue("Forcing failed build 2nd", false);
-    }
-
-
     @Test
     public void testNowAtHK() {
         System.out.println(DTU.nowAtHK());
