@@ -19,6 +19,12 @@ public class DateTimeUtilsTest {
 
 
     @Test
+    public void testForceFailed() {
+        Assert.assertTrue("Forcing failed build", false);
+    }
+
+
+    @Test
     public void testNowAtHK() {
         System.out.println(DTU.nowAtHK());
     }
