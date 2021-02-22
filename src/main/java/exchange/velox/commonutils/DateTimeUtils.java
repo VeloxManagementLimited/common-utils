@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -349,6 +350,12 @@ public class DateTimeUtils {
         LocalDate date = LocalDate.parse(s, ISO_DATETIME_FORMAT);
         ZonedDateTime zonedDateTime = date.atStartOfDay(DEFAULT_TIMEZONE.toZoneId());
         return Date.from(zonedDateTime.toInstant());
+    }
+
+    public static Date parseDateTime(String s) {
+        LocalDateTime date = LocalDateTime.parse(s, ISO_DATETIME_FORMAT);
+        return Date.from(date.atZone(DEFAULT_TIMEZONE.toZoneId())
+                .toInstant());
     }
 
     public static long minutesDiff(Date inputFrom, Date inputTo) {
