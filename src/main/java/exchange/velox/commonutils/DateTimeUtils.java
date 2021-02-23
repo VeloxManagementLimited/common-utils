@@ -394,6 +394,31 @@ public class DateTimeUtils {
         return ChronoUnit.DAYS.between(localDateFrom, localDateTo);
     }
 
+    public static long businessDaysDiffHK(Date inputFrom, Date inputTo, boolean inclusive) {
+        if (dateBefore(inputTo, inputFrom)) {
+            return 0;
+        }
+
+        long count = 0;
+        Date start = inputFrom;
+        Date end = inputTo;
+
+        if (inclusive) {
+            if (isBusinessDateHK(end)) {
+                end = plusOneDay(end);
+            }
+        }
+
+        while (dateBefore(start, end)) {
+            if (isBusinessDateHK(start)) {
+                count++;
+            }
+            start = plusOneDay(start);
+        }
+
+        return count;
+    }
+
     public static boolean dateBefore(Date a, Date b) {
         return daysDiff(a, b) > 0;
     }
@@ -514,6 +539,10 @@ public class DateTimeUtils {
 
     public static boolean isBusinessDate(Date d) {
         return isBusinessDate(d, "USD");
+    }
+
+    public static boolean isBusinessDateHK(Date d) {
+        return isBusinessDate(d, "HKD");
     }
 
     public static boolean isBusinessDate(Date d, String currency) {

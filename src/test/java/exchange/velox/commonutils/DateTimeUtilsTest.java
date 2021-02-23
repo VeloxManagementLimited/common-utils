@@ -113,6 +113,21 @@ public class DateTimeUtilsTest {
     }
 
     @Test
+    public void test_businessDaysDiffHK() {
+
+
+        Date from = null, to = null;
+
+        from = Date.from(ZonedDateTime.of(LocalDateTime.of(2021, Month.MARCH, 30, 13,
+                24, 30), DTU.DEFAULT_TIMEZONE.toZoneId()).toInstant());
+        to = Date.from(ZonedDateTime.of(LocalDateTime.of(2021, Month.APRIL, 7, 8,
+                24, 20), DTU.DEFAULT_TIMEZONE.toZoneId()).toInstant());
+
+        Assert.assertEquals(3, DateTimeUtils.businessDaysDiffHK(from, to, false));
+        Assert.assertEquals(4, DateTimeUtils.businessDaysDiffHK(from, to, true));
+    }
+
+    @Test
     public void testDaysBeforeAfterSame() {
         Date a = null, b = null;
 
