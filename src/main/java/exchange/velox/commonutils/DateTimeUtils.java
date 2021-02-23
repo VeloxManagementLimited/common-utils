@@ -437,6 +437,25 @@ public class DateTimeUtils {
         return daysDiff(a, b) == 0;
     }
 
+    public static boolean dateAndTimeAfter(Date a, Date b) {
+        if (a == null) {
+            a = infinitePast();
+        }
+        if (b == null) {
+            b = infinitePast();
+        }
+        return a.getTime() > b.getTime();
+    }
+    public static boolean dateAndTimeBefore(Date a, Date b) {
+        if (a == null) {
+            a = infinitePast();
+        }
+        if (b == null) {
+            b = infinitePast();
+        }
+        return a.getTime() < b.getTime();
+    }
+
     public static Date max(Date a, Date b) {
         if (a == null) { return b; }
         if (b == null) { return a; }

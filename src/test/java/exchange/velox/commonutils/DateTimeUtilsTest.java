@@ -128,6 +128,19 @@ public class DateTimeUtilsTest {
     }
 
     @Test
+    public void test_dateAndTimeAfter() {
+
+        Date a = null, b = null;
+
+        a = Date.from(ZonedDateTime.of(LocalDateTime.of(2018, Month.MAY, 18, 20,
+                                                        59, 59), DTU.DEFAULT_TIMEZONE.toZoneId()).toInstant());
+        b = Date.from(ZonedDateTime.of(LocalDateTime.of(2018, Month.MAY, 18, 21,
+                                                        0, 0), DTU.DEFAULT_TIMEZONE.toZoneId()).toInstant());
+        Assert.assertTrue(DTU.dateAndTimeBefore(a, b));
+        Assert.assertTrue(DTU.dateAndTimeAfter(b, a));
+    }
+
+    @Test
     public void testDaysBeforeAfterSame() {
         Date a = null, b = null;
 
