@@ -44,6 +44,11 @@ public class MoneyUtilsTest {
         Assert.assertEquals(new BigDecimal("1234.56"), MoneyUtils.getBigDecimal(new BigDecimal("1234.56")));
         Assert.assertTrue(new BigDecimal("1234.00").compareTo(MoneyUtils.getBigDecimal(BigInteger.valueOf(1_234))) == 0);
 
+        Assert.assertTrue(new BigDecimal("7.09").compareTo(MoneyUtils.getBigDecimal(7.09d)) == 0);
+        Assert.assertTrue(new BigDecimal("1237.09").compareTo(MoneyUtils.getBigDecimal(1237.09f)) == 0);
+        Assert.assertTrue(new BigDecimal("1237.00").compareTo(MoneyUtils.getBigDecimal(1237l)) == 0);
+        Assert.assertTrue(new BigDecimal("1237.00").compareTo(MoneyUtils.getBigDecimal(1237)) == 0);
+        Assert.assertTrue(new BigDecimal("1237.00").compareTo(MoneyUtils.getBigDecimal(Short.valueOf("1237"))) == 0);
 
         Assert.assertNotEquals(new BigDecimal("1234.56"), MoneyUtils.getBigDecimal("1,134.56"));
 

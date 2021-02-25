@@ -248,10 +248,8 @@ public class MoneyUtils {
                 if (StringUtils.isNotBlank(s)) {
                     value = new BigDecimal(s);
                 }
-            } else if (number instanceof BigInteger) {
-                value = new BigDecimal((BigInteger) number);
-            } else if (number instanceof Number) {
-                value = new BigDecimal(((Number) number).doubleValue());
+            } else {
+                value = new BigDecimal(String.valueOf(number));
             }
         }
         return value;
