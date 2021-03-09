@@ -177,6 +177,15 @@ public class MoneyUtils {
         return Double.valueOf(decimalFormat.format(rate));
     }
 
+    public static Double cutTo2Double(Double rate) {
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setRoundingMode(RoundingMode.DOWN);
+        if (rate == null) {
+            return null;
+        }
+        return Double.valueOf(decimalFormat.format(rate));
+    }
+
     public static BigDecimal halfUp(BigDecimal amount) {
         if (amount == null) {
             return null;
