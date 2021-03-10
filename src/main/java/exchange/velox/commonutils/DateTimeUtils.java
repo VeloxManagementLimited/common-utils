@@ -524,6 +524,12 @@ public class DateTimeUtils {
         return Date.from(midnightDate.toInstant());
     }
 
+    public static Date midnightOfDate(Date d) {
+        ZonedDateTime date = ZonedDateTime.ofInstant(d.toInstant(), DEFAULT_TIMEZONE.toZoneId());
+        ZonedDateTime midnightDate = date.withHour(23).withMinute(59).withSecond(59).withNano(999_999_999);
+        return Date.from(midnightDate.toInstant());
+    }
+
     public static boolean isWeekend(Date date) {
         Calendar calendar = Calendar.getInstance(DEFAULT_TIMEZONE);
         calendar.setTime(date);
